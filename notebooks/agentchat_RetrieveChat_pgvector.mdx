@@ -15,7 +15,7 @@ AutoGen offers conversable agents powered by LLM, tool or human, which
 can be used to perform tasks collectively via automated chat. This
 framework allows tool use and human participation through multi-agent
 conversation. Please find documentation about this feature
-[here](https://ag2ai.github.io/ag2/docs/Use-Cases/agent_chat).
+[here](https://docs.ag2.ai/docs/Use-Cases/agent_chat).
 
 RetrieveChat is a conversational system for retrieval-augmented code
 generation and question answering. In this notebook, we demonstrate how
@@ -39,17 +39,19 @@ and question answering:
 -   [Example 2: Answer a question based off docstrings w/o human
     feedback](#example-2)
 
-````mdx-code-block
-:::info Requirements
+
+<div class="info Requirements">
+<Info>
 Some extra dependencies are needed for this notebook, which can be installed via pip:
 
 ```bash
 pip install autogen[retrievechat-pgvector] flaml[automl]
 ```
 
-For more information, please refer to the [installation guide](/docs/installation/).
-:::
-````
+For more information, please refer to the [installation guide](/docs/installation/Installation).
+</Info>
+</div>
+
 
 Ensure you have a PGVector instance.
 
@@ -84,7 +86,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 ## Set your API Endpoint
 
 The
-[`config_list_from_json`](https://ag2ai.github.io/ag2/docs/reference/oai/openai_utils#config_list_from_json)
+[`config_list_from_json`](https://docs.ag2.ai/docs/reference/oai/openai_utils#config-list-from-json)
 function loads a list of configurations from an environment variable or
 a json file.
 
@@ -116,11 +118,13 @@ print("models to use: ", [config_list[i]["model"] for i in range(len(config_list
 models to use:  ['gpt4-1106-preview', 'gpt-4o', 'gpt-35-turbo', 'gpt-35-turbo-0613']
 ```
 
-````mdx-code-block
-:::tip
+
+<div class="tip">
+<Tip>
 Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
-:::
-````
+</Tip>
+</div>
+
 
 ## Construct agents for RetrieveChat
 
@@ -161,8 +165,8 @@ assistant = AssistantAgent(
 sentence_transformer_ef = SentenceTransformer("all-distilroberta-v1").encode
 
 # 2. create the RetrieveUserProxyAgent instance named "ragproxyagent"
-# Refer to https://ag2ai.github.io/ag2/docs/reference/agentchat/contrib/retrieve_user_proxy_agent
-# and https://ag2ai.github.io/ag2/docs/reference/agentchat/contrib/vectordb/pgvectordb
+# Refer to https://docs.ag2.ai/docs/reference/agentchat/contrib/retrieve_user_proxy_agent
+# and https://docs.ag2.ai/docs/reference/agentchat/contrib/vectordb/pgvectordb
 # for more information on the RetrieveUserProxyAgent and PGVectorDB
 ragproxyagent = RetrieveUserProxyAgent(
     name="ragproxyagent",

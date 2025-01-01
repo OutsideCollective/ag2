@@ -19,16 +19,18 @@ converse to solve the task. The experts in nested chat can be retrieved
 from agent library. The agents can be equipped with tools for advanced
 coding.
 
-````mdx-code-block
-:::info Requirements
+
+<div class="info Requirements">
+<Info>
 Install `ag2` with CaptainAgent:
 ```bash
 pip install ag2[captainagent]
 ```
 
-For more information, please refer to the [installation guide](/docs/installation/).
-:::
-````
+For more information, please refer to the [installation guide](/docs/installation/Installation).
+</Info>
+</div>
+
 
 ## Setup API endpoint
 
@@ -58,17 +60,18 @@ config_list = [
 ]
 ```
 
-````mdx-code-block
-:::tip
+
+<div class="tip">
+<Tip>
 Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
-:::
-````
+</Tip>
+</div>
+
 
 ```python
 import autogen
 
 config_path = "OAI_CONFIG_LIST"
-llm_config = {"temperature": 0}
 config_list = autogen.config_list_from_json(
     config_path, filter_dict={"model": ["gpt-4o"]}
 )  # You can modify the filter_dict to select your model
@@ -81,7 +84,7 @@ from libaries. In this case, CaptainAgent will automatically generate a
 set of experts according to its identified subtask and initate the group
 chat. By default, the backbone of the LLM is set to `gpt-4o`. For
 instructions on configuring the backbone, refer to docs on
-[`nested_mode`](https://ag2ai.github.io/ag2/docs/topics/captainagent/configurations).
+[`nested_mode`](https://docs.ag2.ai/docs/topics/captainagent/configurations).
 
 ```python
 from autogen import UserProxyAgent
@@ -513,8 +516,8 @@ then assign tools retreived from tool library to the experts.
 For agent library, refer to
 [`captainagent_expert_library.json`](https://github.com/ag2ai/ag2/blob/main/notebook/captainagent_expert_library.json)
 for samples. You can refer to
-[docs](https://ag2ai.github.io/ag2/docs/topics/captainagent/agent_library)
-on how to customize your own expert library.
+[docs](https://docs.ag2.ai/docs/topics/captainagent/agent_library) on
+how to customize your own expert library.
 
 For tool library, we provide a set of tools
 [here](https://github.com/ag2ai/ag2/tree/main/autogen/agentchat/contrib/captainagent/tools/README.md),
@@ -1443,7 +1446,7 @@ building experts for nested chat.
 To run the following demo, it is required to install the dependencies
 from the tool library and obtain BING search api and Rapid API key for
 tools in library to fully function. Please follow the instructions
-[here](https://ag2ai.github.io/ag2/docs/topics/captainagent/tool_library).
+[here](https://docs.ag2.ai/docs/topics/captainagent/tool_library).
 
 ```python
 # The function requires BING api key and Rapid API key to work. You can follow the instructions from docs to get one.
@@ -1857,11 +1860,11 @@ potential of what user customized tools can bring.
 
 For a full list of the configurables and the functionalities in
 CaptainAgent, please refer
-[here](https://ag2ai.github.io/ag2/docs/topics/captainagent/configurations).
+[here](https://docs.ag2.ai/docs/topics/captainagent/configurations).
 
 For how to customize your own agent library, check
-[here](https://ag2ai.github.io/ag2/docs/topics/captainagent/agent_library).
+[here](https://docs.ag2.ai/docs/topics/captainagent/agent_library).
 
 For how to implement your own tool library that suits your need, check
 the documents
-[here](https://ag2ai.github.io/ag2/docs/topics/captainagent/tool_library).
+[here](https://docs.ag2.ai/docs/topics/captainagent/tool_library).

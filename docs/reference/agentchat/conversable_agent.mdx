@@ -101,7 +101,7 @@ def __init__(name: str,
 - `context_variables` _dict or None_ - Context variables that provide a persistent context for the agent.
 - `Note` - Will maintain a reference to the passed in context variables (enabling a shared context)
   Only used in Swarms at this stage:
-  https://ag2ai.github.io/ag2/docs/reference/agentchat/contrib/swarm_agent
+  https://docs.ag2.ai/docs/reference/agentchat/contrib/swarm_agent
 
 ### name
 
@@ -419,9 +419,9 @@ Send a message to another agent.
   [OpenAIWrapper.create](../oai/client#create).
   For example, one agent can send a message A as:
 ```python
-\{
+{
     "content": lambda context: context["use_tool_msg"],
-    "context": \{
+    "context": {
         "use_tool_msg": "Use tool X if they are relevant."
     }
 }
@@ -463,9 +463,9 @@ async def a_send(message: Union[dict, str],
   [OpenAIWrapper.create](../oai/client#create).
   For example, one agent can send a message A as:
 ```python
-\{
+{
     "content": lambda context: context["use_tool_msg"],
-    "context": \{
+    "context": {
         "use_tool_msg": "Use tool X if they are relevant."
     }
 }
@@ -563,7 +563,7 @@ def initiate_chat(recipient: "ConversableAgent",
                   max_turns: Optional[int] = None,
                   summary_method: Optional[Union[
                       str, Callable]] = DEFAULT_SUMMARY_METHOD,
-                  summary_args: Optional[dict] = \{},
+                  summary_args: Optional[dict] = {},
                   message: Optional[Union[dict, str, Callable]] = None,
                   **kwargs) -> ChatResult
 ```
@@ -581,7 +581,7 @@ If `clear_history` is True, the chat history with the recipient agent will be cl
 - `silent` _bool or None_ - (Experimental) whether to print the messages for this conversation. Default is False.
 - `cache` _AbstractCache or None_ - the cache client to be used for this conversation. Default is None.
 - `max_turns` _int or None_ - the maximum number of turns for the chat between the two agents. One turn means one conversation round trip. Note that this is different from
-  [max_consecutive_auto_reply](#max_consecutive_auto_reply) which is the maximum number of consecutive auto replies; and it is also different from [max_rounds in GroupChat](./groupchat#groupchat-objects) which is the maximum number of rounds in a group chat session.
+  [max_consecutive_auto_reply](#max-consecutive-auto-reply) which is the maximum number of consecutive auto replies; and it is also different from [max_rounds in GroupChat](./groupchat) which is the maximum number of rounds in a group chat session.
   If max_turns is set to None, the chat will continue until a termination condition is met. Default is None.
 - `summary_method` _str or callable_ - a method to get a summary from the chat. Default is DEFAULT_SUMMARY_METHOD, i.e., "last_msg".
   
@@ -636,12 +636,12 @@ If `clear_history` is True, the chat history with the recipient agent will be cl
   
     ```python
     def my_message(sender: ConversableAgent, recipient: ConversableAgent, context: dict) -> Union[str, Dict]:
-        final_msg = \{}
+        final_msg = {}
         carryover = context.get("carryover", "")
         if isinstance(message, list):
             carryover = carryover[-1]
         final_msg["content"] = "Write a blogpost." + "\nContext: \n" + carryover
-        final_msg["context"] = \{"prefix": "Today I feel"}
+        final_msg["context"] = {"prefix": "Today I feel"}
         return final_msg
     ```
 - `**kwargs` - any additional information. It has the following reserved fields:
@@ -670,7 +670,7 @@ async def a_initiate_chat(recipient: "ConversableAgent",
                           max_turns: Optional[int] = None,
                           summary_method: Optional[Union[
                               str, Callable]] = DEFAULT_SUMMARY_METHOD,
-                          summary_args: Optional[dict] = \{},
+                          summary_args: Optional[dict] = {},
                           message: Optional[Union[str, Callable]] = None,
                           **kwargs) -> ChatResult
 ```
@@ -698,7 +698,7 @@ def initiate_chats(chat_queue: list[dict[str, Any]]) -> list[ChatResult]
 **Arguments**:
 
 - `chat_queue` _List[Dict]_ - a list of dictionaries containing the information of the chats.
-  Each dictionary should contain the input arguments for [`initiate_chat`](conversable_agent#initiate_chat)
+  Each dictionary should contain the input arguments for [`initiate_chat`](conversable_agent#initiate-chat)
   
 - `Returns` - a list of ChatResult objects corresponding to the finished chats in the chat_queue.
 
@@ -1189,10 +1189,11 @@ Return the function map.
 
 ```python
 def register_for_llm(
-        *,
-        name: Optional[str] = None,
-        description: Optional[str] = None,
-        api_style: Literal["function", "tool"] = "tool") -> Callable[[F], F]
+    *,
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+    api_style: Literal["function", "tool"] = "tool"
+) -> Callable[[Union[F, Tool]], Tool]
 ```
 
 Decorator factory for registering a function to be used by an agent.
@@ -1240,7 +1241,8 @@ agent's configuration.
 ### register\_for\_execution
 
 ```python
-def register_for_execution(name: Optional[str] = None) -> Callable[[F], F]
+def register_for_execution(
+        name: Optional[str] = None) -> Callable[[Union[Tool, F]], Tool]
 ```
 
 Decorator factory for registering a function to be executed by an agent.

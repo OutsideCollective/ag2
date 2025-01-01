@@ -15,7 +15,7 @@ AutoGen offers conversable agents powered by LLM, tool or human, which
 can be used to perform tasks collectively via automated chat. This
 framework allows tool use and human participation through multi-agent
 conversation. Please find documentation about this feature
-[here](https://ag2ai.github.io/ag2/docs/Use-Cases/agent_chat).
+[here](https://docs.ag2.ai/docs/Use-Cases/agent_chat).
 
 RetrieveChat is a conversational system for retrieval-augmented code
 generation and question answering. In this notebook, we demonstrate how
@@ -37,17 +37,19 @@ and question answering:
 -   [Example 1: Generate code based off docstrings w/o human
     feedback](#example-1)
 
-````mdx-code-block
-:::info Requirements
+
+<div class="info Requirements">
+<Info>
 Some extra dependencies are needed for this notebook, which can be installed via pip:
 
 ```bash
 pip install autogen[retrievechat-mongodb] flaml[automl]
 ```
 
-For more information, please refer to the [installation guide](/docs/installation/).
-:::
-````
+For more information, please refer to the [installation guide](/docs/installation/Installation).
+</Info>
+</div>
+
 
 Ensure you have a MongoDB Atlas instance with Cluster Tier \>= M10. Read
 more on Cluster support
@@ -76,11 +78,13 @@ print("models to use: ", [config_list[i]["model"] for i in range(len(config_list
 models to use:  ['gpt-3.5-turbo-0125']
 ```
 
-````mdx-code-block
-:::tip
+
+<div class="tip">
+<Tip>
 Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
-:::
-````
+</Tip>
+</div>
+
 
 ## Construct agents for RetrieveChat
 
@@ -115,8 +119,8 @@ assistant = AssistantAgent(
 )
 
 # 2. create the RetrieveUserProxyAgent instance named "ragproxyagent"
-# Refer to https://ag2ai.github.io/ag2/docs/reference/agentchat/contrib/retrieve_user_proxy_agent
-# and https://ag2ai.github.io/ag2/docs/reference/agentchat/contrib/vectordb/mongodb
+# Refer to https://docs.ag2.ai/docs/reference/agentchat/contrib/retrieve_user_proxy_agent
+# and https://docs.ag2.ai/docs/reference/agentchat/contrib/vectordb/mongodb
 # for more information on the RetrieveUserProxyAgent and MongoDBAtlasVectorDB
 ragproxyagent = RetrieveUserProxyAgent(
     name="ragproxyagent",

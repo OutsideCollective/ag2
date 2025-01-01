@@ -14,7 +14,7 @@ AutoGen offers conversable agents powered by LLM, tool or human, which
 can be used to perform tasks collectively via automated chat. This
 framework allows tool use and human participation through multi-agent
 conversation. Please find documentation about this feature
-[here](https://ag2ai.github.io/ag2/docs/Use-Cases/agent_chat).
+[here](https://docs.ag2.ai/docs/Use-Cases/agent_chat).
 
 In this notebook, we demonstrate how to pass a cumstomized agent
 selection method to GroupChat. The customized function looks like this:
@@ -50,21 +50,23 @@ group chat respectively. You can access other attributes of the
 groupchat, such as `groupchat.allowed_speaker_transitions_dict` for
 pre-defined allowed_speaker_transitions_dict.
 
-````mdx-code-block
-:::info Requirements
+
+<div class="info Requirements">
+<Info>
 Install `pyautogen`:
 ```bash
 pip install pyautogen
 ```
 
-For more information, please refer to the [installation guide](/docs/installation/).
-:::
-````
+For more information, please refer to the [installation guide](/docs/installation/Installation).
+</Info>
+</div>
+
 
 ## Set your API Endpoint
 
 The
-[`config_list_from_json`](https://ag2ai.github.io/ag2/docs/reference/oai/openai_utils#config_list_from_json)
+[`config_list_from_json`](https://docs.ag2.ai/docs/reference/oai/openai_utils#config-list-from-json)
 function loads a list of configurations from an environment variable or
 a json file.
 
@@ -79,11 +81,13 @@ config_list = autogen.config_list_from_json(
 )
 ```
 
-````mdx-code-block
-:::tip
+
+<div class="tip">
+<Tip>
 Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
-:::
-````
+</Tip>
+</div>
+
 
 ## Construct Agents
 

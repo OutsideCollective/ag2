@@ -17,34 +17,35 @@ focuses on making agent coordination and execution lightweight.
 
 In AG2 we offer a simple programming interface to build and orchestrate
 a swarm of agents. Please check the
-[Documentation](https://ag2ai.github.io/ag2/docs/topics/swarm) and
+[Documentation](https://docs.ag2.ai/docs/topics/swarm) and
 [Blog](https://docs.ag2.ai/blog/2024-11-17-Swarm) for more details.
 
 After learning the fundamentals of AG2’s swarm in this notebook, check
-out [this
-notebook](https://ag2ai.github.io/ag2/docs/notebooks/agentchat_swarm)
-where we take on some more advanced techniques that provide greater
-control and predicability for your swarms.
+out [this notebook](https://docs.ag2.ai/notebooks/agentchat_swarm) where
+we take on some more advanced techniques that provide greater control
+and predicability for your swarms.
 
 In this notebook, we implement OpenAI’s [airline customer service
 example](https://github.com/openai/swarm/tree/main/examples/airline) in
 AG2.
 
-````mdx-code-block
-:::info Requirements
+
+<div class="info Requirements">
+<Info>
 Install `ag2`:
 ```bash
 pip install ag2
 ```
 
-For more information, please refer to the [installation guide](/docs/installation/).
-:::
-````
+For more information, please refer to the [installation guide](/docs/installation/Installation).
+</Info>
+</div>
+
 
 ## Set your API Endpoint
 
 The
-[`config_list_from_json`](https://ag2ai.github.io/ag2/docs/reference/oai/openai_utils#config_list_from_json)
+[`config_list_from_json`](https://docs.ag2.ai/docs/reference/oai/openai_utils#config-list-from-json)
 function loads a list of configurations from an environment variable or
 a json file.
 
