@@ -1,0 +1,77 @@
+---
+sidebarTitle: JupyterKernelClient
+title: autogen.coding.jupyter.jupyter_client.JupyterKernelClient
+---
+<h2 id="autogen.coding.jupyter.jupyter_client.JupyterKernelClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">JupyterKernelClient</span>
+</h2>
+
+```python
+JupyterKernelClient(websocket: WebSocket)
+```
+
+    (Experimental) A client for communicating with a Jupyter kernel.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `websocket` | **Type:** WebSocket |
+
+### Class Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### ExecutionResult
+<br />
+
+    <br />
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### execute
+
+```python
+execute(
+    self,
+    code: str,
+    timeout_seconds: Optional[float] = None
+) -> ExecutionResult
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `code` | **Type:** str |
+| `timeout_seconds` | **Type:** Optional[float]<br/><br/>**Default:** None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### stop
+
+```python
+stop(self) -> None
+```
+
+    
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### wait_for_ready
+
+```python
+wait_for_ready(self, timeout_seconds: Optional[float] = None) -> bool
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `timeout_seconds` | **Type:** Optional[float]<br/><br/>**Default:** None |
+
+<br />

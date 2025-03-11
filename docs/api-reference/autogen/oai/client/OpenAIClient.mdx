@@ -1,0 +1,96 @@
+---
+sidebarTitle: OpenAIClient
+title: autogen.oai.client.OpenAIClient
+---
+<h2 id="autogen.oai.client.OpenAIClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">OpenAIClient</span>
+</h2>
+
+```python
+OpenAIClient(client: Union[OpenAI, AzureOpenAI], response_format: Union[BaseModel, dict[str, Any], None] = None)
+```
+
+    Follows the Client protocol and wraps the OpenAI client.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `client` | **Type:** Union[OpenAI, AzureOpenAI] |
+| `response_format` | **Type:** Union[BaseModel, dict[str, Any], None]<br/><br/>**Default:** None |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### cost
+
+```python
+cost(self, response: Union[ChatCompletion, Completion]) -> float
+```
+
+    Calculate the cost of the response.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | **Type:** Union[ChatCompletion, Completion] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create
+
+```python
+create(self, params: dict[str, Any]) -> ChatCompletion
+```
+
+    Create a completion for a given config using openai's client.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | The params for the completion.<br/><br/>**Type:** dict[str, Any] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| ChatCompletion | The completion. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_usage
+
+```python
+get_usage(response: Union[ChatCompletion, Completion]) -> dict
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | **Type:** Union[ChatCompletion, Completion] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### message_retrieval
+
+```python
+message_retrieval(self, response: Union[ChatCompletion, Completion]) -> Union[list[str], list[ChatCompletionMessage]]
+```
+
+    Retrieve the messages from the response.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | The response from openai.<br/><br/>**Type:** Union[ChatCompletion, Completion] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Union[list[str], list[ChatCompletionMessage]] | The message from the response. |
+
+<br />

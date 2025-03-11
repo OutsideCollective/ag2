@@ -1,0 +1,78 @@
+---
+sidebarTitle: TextMessageCompressor
+title: autogen.agentchat.contrib.capabilities.transforms.TextMessageCompressor
+---
+<h2 id="autogen.agentchat.contrib.capabilities.transforms.TextMessageCompressor" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">TextMessageCompressor</span>
+</h2>
+
+```python
+TextMessageCompressor(
+    text_compressor: TextCompressor | None = None,
+    min_tokens: int | None = None,
+    compression_params: dict = {},
+    cache: AbstractCache | None = None,
+    filter_dict: dict[str, Any] | None = None,
+    exclude_filter: bool = True
+)
+```
+
+    A transform for compressing text messages in a conversation history.<br/>It uses a specified text compression method to reduce the token count of messages, which can lead to more efficient
+    processing and response generation by downstream models.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `text_compressor` | **Type:** [TextCompressor](/docs/api-reference/autogen/agentchat/contrib/capabilities/text_compressors/TextCompressor) \| None<br/><br/>**Default:** None |
+| `min_tokens` | **Type:** int \| None<br/><br/>**Default:** None |
+| `compression_params` | **Type:** dict<br/><br/>**Default:** \{} |
+| `cache` | **Type:** [AbstractCache](/docs/api-reference/autogen/cache/AbstractCache) \| None<br/><br/>**Default:** None |
+| `filter_dict` | **Type:** dict[str, typing.Any] \| None<br/><br/>**Default:** None |
+| `exclude_filter` | **Type:** bool<br/><br/>**Default:** True |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### apply_transform
+
+```python
+apply_transform(self, messages: list[dict[str, Any]]) -> list[dict[str, Any]]
+```
+
+    Applies compression to messages in a conversation history based on the specified configuration.<br/>The function processes each message according to the `compression_args` and `min_tokens` settings, applying
+    the specified compression configuration and returning a new list of messages with reduced token counts
+    where possible.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `messages` | A list of message dictionaries to be compressed.<br/><br/>**Type:** list[dict[str, typing.Any]] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[dict[str, typing.Any]] | List[Dict]: A list of dictionaries with the message content compressed according to the configured method and scope. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_logs
+
+```python
+get_logs(
+    self,
+    pre_transform_messages: list[dict[str, Any]],
+    post_transform_messages: list[dict[str, Any]]
+) -> tuple[str, bool]
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `pre_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+| `post_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+
+<br />

@@ -1,0 +1,331 @@
+---
+sidebarTitle: CouchbaseVectorDB
+title: autogen.agentchat.contrib.vectordb.couchbase.CouchbaseVectorDB
+---
+<h2 id="autogen.agentchat.contrib.vectordb.couchbase.CouchbaseVectorDB" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">CouchbaseVectorDB</span>
+</h2>
+
+```python
+CouchbaseVectorDB(
+    connection_string: str = 'couchbase://localhost',
+    username: str = 'Administrator',
+    password: str = 'password',
+    bucket_name: str = 'vector_db',
+    embedding_function: Callable = None,
+    scope_name: str = '_default',
+    collection_name: str = '_default',
+    index_name: str = None
+)
+```
+
+    A vector database implementation that uses Couchbase as the backend.<br/>Initialize the vector database.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `connection_string` | **Type:** str<br/><br/>**Default:** 'couchbase |
+| `username` | **Type:** str<br/><br/>**Default:** 'Administrator' |
+| `password` | **Type:** str<br/><br/>**Default:** 'password' |
+| `bucket_name` | **Type:** str<br/><br/>**Default:** 'vector_db' |
+| `embedding_function` | **Type:** Callable<br/><br/>**Default:** None |
+| `scope_name` | **Type:** str<br/><br/>**Default:** '_default' |
+| `collection_name` | **Type:** str<br/><br/>**Default:** '_default' |
+| `index_name` | **Type:** str<br/><br/>**Default:** None |
+
+### Class Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### active_collection
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### embedding_function
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### type
+<br />
+
+    <br />
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create_collection
+
+```python
+create_collection(
+    self,
+    collection_name: str,
+    overwrite: bool = False,
+    get_or_create: bool = True
+) -> Collection
+```
+
+    Create a collection in the vector database and create a vector search index in the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` | The name of the collection.<br/><br/>**Type:** str |
+| `overwrite` | Whether to overwrite the collection if it exists.<br/><br/>Default is False.<br/><br/>**Type:** bool<br/><br/>**Default:** False |
+| `get_or_create` | Whether to get or create the collection.<br/><br/>Default is True<br/><br/>**Type:** bool<br/><br/>**Default:** True |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create_index_if_not_exists
+
+```python
+create_index_if_not_exists(
+    self,
+    index_name: str = 'vector_index',
+    collection: ForwardRef('Collection') | None = None
+) -> 
+```
+
+    Creates a vector search index on the specified collection in Couchbase.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `index_name` | The name of the vector search index to create.<br/><br/>Defaults to "vector_search_index".<br/><br/>**Type:** str<br/><br/>**Default:** 'vector_index' |
+| `collection` | The Couchbase collection to create the index on.<br/><br/>Defaults to None.<br/><br/>**Type:** ForwardRef('Collection') \| None<br/><br/>**Default:** None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create_vector_search_index
+
+```python
+create_vector_search_index(
+    self,
+    collection,
+    index_name: str | None = 'vector_index',
+    similarity: Literal['l2_norm', 'dot_product'] = 'dot_product'
+) -> None
+```
+
+    Create a vector search index in the collection.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection` |  |
+| `index_name` | **Type:** str \| None<br/><br/>**Default:** 'vector_index' |
+| `similarity` | **Type:** Literal['l2_norm', 'dot_product']<br/><br/>**Default:** 'dot_product' |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### delete_collection
+
+```python
+delete_collection(self, collection_name: str) -> None
+```
+
+    Delete the collection from the vector database.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` | The name of the collection.<br/><br/>**Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### delete_docs
+
+```python
+delete_docs(
+    self,
+    ids: list[str | int],
+    collection_name: str = None,
+    batch_size: int = 1000,
+    **kwargs
+) -> 
+```
+
+    Delete documents from the collection of the vector database.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | **Type:** list[str \| int] |
+| `collection_name` | **Type:** str<br/><br/>**Default:** None |
+| `batch_size` | **Type:** int<br/><br/>**Default:** 1000 |
+| `**kwargs` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_collection
+
+```python
+get_collection(self, collection_name: str | None = None) -> Collection
+```
+
+    Get the collection from the vector database.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` | The name of the collection.<br/><br/>Default is None.<br/><br/>If None, return the current active collection.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Collection | The collection object (Collection) |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_docs_by_ids
+
+```python
+get_docs_by_ids(
+    self,
+    ids: list[str | int] | None = None,
+    collection_name: str = None,
+    include: list[str] | None = None,
+    **kwargs: Any
+) -> list[Document]
+```
+
+    Retrieve documents from the collection of the vector database based on the ids.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | **Type:** list[str \| int] \| None<br/><br/>**Default:** None |
+| `collection_name` | **Type:** str<br/><br/>**Default:** None |
+| `include` | **Type:** list[str] \| None<br/><br/>**Default:** None |
+| `**kwargs` | **Type:** Any |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### insert_docs
+
+```python
+insert_docs(
+    self,
+    docs: list[Document],
+    collection_name: str = None,
+    upsert: bool = False,
+    batch_size: int = 1000,
+    **kwargs: Any
+) -> None
+```
+
+    Insert Documents and Vector Embeddings into the collection of the vector database. Documents are upserted in all cases.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `docs` | **Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] |
+| `collection_name` | **Type:** str<br/><br/>**Default:** None |
+| `upsert` | **Type:** bool<br/><br/>**Default:** False |
+| `batch_size` | **Type:** int<br/><br/>**Default:** 1000 |
+| `**kwargs` | **Type:** Any |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### retrieve_docs
+
+```python
+retrieve_docs(
+    self,
+    queries: list[str],
+    collection_name: str = None,
+    n_results: int = 10,
+    distance_threshold: float = -1,
+    **kwargs: Any
+) -> list[list[tuple[Document, float]]]
+```
+
+    Retrieve documents from the collection of the vector database based on the queries.<br/>Note: Distance threshold is not supported in Couchbase FTS.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `queries` | **Type:** list[str] |
+| `collection_name` | **Type:** str<br/><br/>**Default:** None |
+| `n_results` | **Type:** int<br/><br/>**Default:** 10 |
+| `distance_threshold` | **Type:** float<br/><br/>**Default:** -1 |
+| `**kwargs` | **Type:** Any |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### search_index_exists
+
+```python
+search_index_exists(self, index_name: str) -> 
+```
+
+    Check if the specified index is ready
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `index_name` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### update_docs
+
+```python
+update_docs(
+    self,
+    docs: list[Document],
+    collection_name: str = None,
+    batch_size: int = 1000,
+    **kwargs: Any
+) -> None
+```
+
+    Update documents, including their embeddings, in the Collection.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `docs` | **Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] |
+| `collection_name` | **Type:** str<br/><br/>**Default:** None |
+| `batch_size` | **Type:** int<br/><br/>**Default:** 1000 |
+| `**kwargs` | **Type:** Any |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### upsert_docs
+
+```python
+upsert_docs(
+    self,
+    docs: list[Document],
+    collection: Collection,
+    batch_size: int = 1000,
+    **kwargs: Any
+) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `docs` | **Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] |
+| `collection` | **Type:** Collection |
+| `batch_size` | **Type:** int<br/><br/>**Default:** 1000 |
+| `**kwargs` | **Type:** Any |
+
+<br />

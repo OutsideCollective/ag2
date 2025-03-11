@@ -1,0 +1,87 @@
+---
+sidebarTitle: TextMessageContentName
+title: autogen.agentchat.contrib.capabilities.transforms.TextMessageContentName
+---
+<h2 id="autogen.agentchat.contrib.capabilities.transforms.TextMessageContentName" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">TextMessageContentName</span>
+</h2>
+
+```python
+TextMessageContentName(
+    position: str = 'start',
+    format_string: str = '{name}:\n',
+    deduplicate: bool = True,
+    filter_dict: dict[str, Any] | None = None,
+    exclude_filter: bool = True
+)
+```
+
+    A transform for including the agent's name in the content of a message.<br/>    How to create and apply the transform: <br/>    # Imports
+        from autogen.agentchat.contrib.capabilities import transform_messages, transforms
+    
+        # Create Transform
+        name_transform = transforms.TextMessageContentName(position="start", format_string="'\{name}' said: <br/>")
+    
+        # Create the TransformMessages
+        context_handling = transform_messages.TransformMessages(
+                    transforms=[
+                        name_transform
+                    ]
+                )
+    
+        # Add it to an agent so when they run inference it will apply to the messages
+        context_handling.add_to_agent(my_agent)
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `position` | **Type:** str<br/><br/>**Default:** 'start' |
+| `format_string` | **Type:** str<br/><br/>**Default:** '\{name} |
+| `deduplicate` | **Type:** bool<br/><br/>**Default:** True |
+| `filter_dict` | **Type:** dict[str, typing.Any] \| None<br/><br/>**Default:** None |
+| `exclude_filter` | **Type:** bool<br/><br/>**Default:** True |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### apply_transform
+
+```python
+apply_transform(self, messages: list[dict[str, Any]]) -> list[dict[str, Any]]
+```
+
+    Applies the name change to the message based on the position and format string.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `messages` | A list of message dictionaries.<br/><br/>**Type:** list[dict[str, typing.Any]] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[dict[str, typing.Any]] | List[Dict]: A list of dictionaries with the message content updated with names. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_logs
+
+```python
+get_logs(
+    self,
+    pre_transform_messages: list[dict[str, Any]],
+    post_transform_messages: list[dict[str, Any]]
+) -> tuple[str, bool]
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `pre_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+| `post_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+
+<br />

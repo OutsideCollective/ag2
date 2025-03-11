@@ -1,0 +1,130 @@
+---
+custom_edit_url: https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_group_chat_with_llamaindex_agents.ipynb
+description: Integrate llamaindex agents with Autogen.
+source_notebook: /notebook/agentchat_group_chat_with_llamaindex_agents.ipynb
+tags:
+- react
+- llamaindex
+- integration
+- group chat
+- software engineering
+title: Groupchat with Llamaindex agents
+---
+
+<a href="https://colab.research.google.com/github/ag2ai/ag2/blob/main/notebook/agentchat_group_chat_with_llamaindex_agents.ipynb" class="colab-badge" target="_blank"><img noZoom src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a>
+<a href="https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_group_chat_with_llamaindex_agents.ipynb" class="github-badge" target="_blank"><img noZoom src="https://img.shields.io/badge/Open%20on%20GitHub-grey?logo=github" alt="Open on GitHub" /></a>
+
+
+
+
+[Llamaindex
+agents](https://docs.llamaindex.ai/en/stable/optimizing/agentic_strategies/agentic_strategies/)
+have the ability to use planning strategies to answer user questions.
+They can be integrated in Autogen in easy ways
+
+## Requirements
+
+```python
+%pip install pyautogen[openai] llama-index llama-index-tools-wikipedia llama-index-readers-wikipedia wikipedia
+```
+
+## Set your API Endpoint
+
+```python
+import os
+
+import autogen
+
+config_list = autogen.config_list_from_json(
+    "OAI_CONFIG_LIST",
+    filter_dict={"tags": ["gpt-3.5-turbo"]},  # comment out to get all
+)
+# When using a single openai endpoint, you can use the following:
+# config_list = [{"model": "gpt-3.5-turbo", "api_key": os.getenv("OPENAI_API_KEY")}]
+```
+
+## Set Llamaindex
+
+```python
+from llama_index.core import Settings
+from llama_index.core.agent import ReActAgent
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.llms.openai import OpenAI
+from llama_index.tools.wikipedia import WikipediaToolSpec
+
+llm = OpenAI(
+    model="gpt-3.5-turbo",
+    temperature=0.0,
+    api_key=os.environ.get("OPENAPI_API_KEY", ""),
+)
+
+embed_model = OpenAIEmbedding(
+    model="text-embedding-ada-002",
+    temperature=0.0,
+    api_key=os.environ.get("OPENAPI_API_KEY", ""),
+)
+
+Settings.llm = llm
+Settings.embed_model = embed_model
+
+# create a react agent to use wikipedia tool
+wiki_spec = WikipediaToolSpec()
+# Get the search wikipedia tool
+wikipedia_tool = wiki_spec.to_tool_list()[1]
+
+location_specialist = ReActAgent.from_tools(tools=[wikipedia_tool], llm=llm, max_iterations=10, verbose=True)
+```
+
+## Create agents
+
+In this example, we will create a Llamaindex agent to answer questions
+fecting data from wikipedia and a user proxy agent.
+
+```python
+from autogen.agentchat.contrib.llamaindex_conversable_agent import LLamaIndexConversableAgent
+
+llm_config = {
+    "temperature": 0,
+    "config_list": config_list,
+}
+
+trip_assistant = LLamaIndexConversableAgent(
+    "trip_specialist",
+    llama_index_agent=location_specialist,
+    system_message="You help customers finding more about places they would like to visit. You can use external resources to provide more details as you engage with the customer.",
+    description="This agents helps customers discover locations to visit, things to do, and other details about a location. It can use external resources to provide more details. This agent helps in finding attractions, history and all that there si to know about a place",
+)
+
+user_proxy = autogen.UserProxyAgent(
+    name="Admin",
+    human_input_mode="ALWAYS",
+    code_execution_config=False,
+)
+```
+
+Next, let’s set up our group chat.
+
+```python
+groupchat = autogen.GroupChat(
+    agents=[trip_assistant, user_proxy],
+    messages=[],
+    max_round=500,
+    speaker_selection_method="round_robin",
+    enable_clear_history=True,
+)
+manager = autogen.GroupChatManager(groupchat=groupchat, llm_config=llm_config)
+```
+
+
+```python
+chat_result = user_proxy.initiate_chat(
+    manager,
+    message="""
+What can i find in Tokyo related to Hayao Miyazaki and its moveis like Spirited Away?.
+""",
+)
+```
+
+<div className="edit-url-container">
+    <a className="edit-url" href="https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_group_chat_with_llamaindex_agents.ipynb" target='_blank'><Icon icon="pen" iconType="solid" size="13px"/> Edit this page</a>
+</div>

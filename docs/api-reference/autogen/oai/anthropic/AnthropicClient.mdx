@@ -1,0 +1,190 @@
+---
+sidebarTitle: AnthropicClient
+title: autogen.oai.anthropic.AnthropicClient
+---
+<h2 id="autogen.oai.anthropic.AnthropicClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">AnthropicClient</span>
+</h2>
+
+```python
+AnthropicClient(**kwargs: Any)
+```
+
+    Initialize the Anthropic API client.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `**kwargs` | **Type:** Any |
+
+### Instance Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### api_key
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### aws_access_key
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### aws_region
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### aws_secret_key
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### aws_session_token
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### gcp_auth_token
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### gcp_project_id
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### gcp_region
+<br />
+
+    <br />
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### convert_tools_to_functions
+
+```python
+convert_tools_to_functions(tools: list) -> list
+```
+
+    Convert tool definitions into Anthropic-compatible functions,
+    updating nested $ref paths in property schemas.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `tools` | List of tool definitions.<br/><br/>**Type:** list |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list | list: List of functions with updated $ref paths. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### cost
+
+```python
+cost(self, response) -> float
+```
+
+    Calculate the cost of the completion using the Anthropic pricing.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create
+
+```python
+create(self, params: dict[str, Any]) -> ChatCompletionExtended
+```
+
+    Creates a completion using the Anthropic API.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | **Type:** dict[str, Any] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_usage
+
+```python
+get_usage(response: ChatCompletion) -> dict
+```
+
+    Get the usage of tokens and their cost information.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | **Type:** ChatCompletion |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### load_config
+
+```python
+load_config(self, params: dict[str, Any]) -> 
+```
+
+    Load the configuration for the Anthropic API client.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | **Type:** dict[str, Any] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### message_retrieval
+
+```python
+message_retrieval(self, response) -> list
+```
+
+    Retrieve and return a list of strings or a list of Choice.Message from the response.<br/>NOTE: if a list of Choice.Message is returned, it currently needs to contain the fields of OpenAI's ChatCompletion Message object,
+    since that is expected for function or tool calling in the rest of the codebase at the moment, unless a custom agent is being used.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### openai_func_to_anthropic
+
+```python
+openai_func_to_anthropic(openai_func: dict) -> dict
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `openai_func` | **Type:** dict |
+
+<br />

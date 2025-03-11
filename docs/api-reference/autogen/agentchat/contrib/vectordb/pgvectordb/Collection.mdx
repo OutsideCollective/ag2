@@ -1,0 +1,428 @@
+---
+sidebarTitle: Collection
+title: autogen.agentchat.contrib.vectordb.pgvectordb.Collection
+---
+<h2 id="autogen.agentchat.contrib.vectordb.pgvectordb.Collection" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">Collection</span>
+</h2>
+
+```python
+Collection(
+    client: Any | None = None,
+    collection_name: str = 'ag2-docs',
+    embedding_function: Callable[..., Any] | None = None,
+    metadata: Any | None = None,
+    get_or_create: Any | None = None
+)
+```
+
+    A Collection object for PGVector.<br/>Attributes: <br/>    client: The PGVector client.<br/>    collection_name (str): The name of the collection. Default is "documents".<br/>    embedding_function (Callable): The embedding function used to generate the vector representation.<br/>        Default is None. SentenceTransformer("all-MiniLM-L6-v2").encode will be used when None.<br/>        Models can be chosen from: <br/>        https://huggingface.co/models?library=sentence-transformers
+        metadata (Optional[dict[str, Any]]): The metadata of the collection.<br/>    get_or_create (Optional): The flag indicating whether to get or create the collection.<br/>Initialize the Collection object.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `client` | **Type:** Any \| None<br/><br/>**Default:** None |
+| `collection_name` | **Type:** str<br/><br/>**Default:** 'ag2-docs' |
+| `embedding_function` | **Type:** Callable[..., Any] \| None<br/><br/>**Default:** None |
+| `metadata` | **Type:** Any \| None<br/><br/>**Default:** None |
+| `get_or_create` | **Type:** Any \| None<br/><br/>**Default:** None |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### add
+
+```python
+add(
+    self,
+    ids: list[str | int],
+    documents: list[Document] | None,
+    embeddings: list[Any] | None = None,
+    metadatas: list[Any] | None = None
+) -> None
+```
+
+    Add documents to the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | A list of document IDs.<br/><br/>**Type:** list[str \| int] |
+| `documents` | A list of documents.<br/><br/>**Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] \| None |
+| `embeddings` | A list of document embeddings.<br/><br/>Optional<br/><br/>**Type:** list[typing.Any] \| None<br/><br/>**Default:** None |
+| `metadatas` | A list of document metadatas.<br/><br/>Optional<br/><br/>**Type:** list[typing.Any] \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### convert_string_to_array
+
+```python
+convert_string_to_array(array_string: str) -> list[float]
+```
+
+    Convert a string representation of an array to a list of floats.<br/>Parameters: <br/>- array_string (str): The string representation of the array.<br/>Returns: <br/>- list: A list of floats parsed from the input string. If the input is
+      not a string, it returns the input itself.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `array_string` | **Type:** str |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[float] | - list: A list of floats parsed from the input string. If the input is not a string, it returns the input itself. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### cosine_distance
+
+```python
+cosine_distance(arr1: list[float], arr2: list[float]) -> float
+```
+
+    Calculate the cosine distance between two vectors.<br/>Parameters: <br/>- arr1 (List[float]): The first vector.<br/>- arr2 (List[float]): The second vector.<br/>Returns: <br/>- float: The cosine distance between arr1 and arr2.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `arr1` | **Type:** list[float] |
+| `arr2` | **Type:** list[float] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| float | - float: The cosine distance between arr1 and arr2. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### count
+
+```python
+count(self) -> int
+```
+
+    Get the total number of documents in the collection.<br/>Returns: <br/>    int: The total number of documents.
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| int | int: The total number of documents. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create_collection
+
+```python
+create_collection(
+    self,
+    collection_name: str | None = None,
+    dimension: int | str | None = None
+) -> None
+```
+
+    Create a new collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` | The name of the new collection.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+| `dimension` | The dimension size of the sentence embedding model<br/><br/>**Type:** int \| str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### delete
+
+```python
+delete(
+    self,
+    ids: list[str | int],
+    collection_name: str | None = None
+) -> None
+```
+
+    Delete documents from the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | A list of document IDs to delete.<br/><br/>**Type:** list[str \| int] |
+| `collection_name` | The name of the collection to delete.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### delete_collection
+
+```python
+delete_collection(self, collection_name: str | None = None) -> None
+```
+
+    Delete the entire collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` | The name of the collection to delete.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### euclidean_distance
+
+```python
+euclidean_distance(arr1: list[float], arr2: list[float]) -> float
+```
+
+    Calculate the Euclidean distance between two vectors.<br/>Parameters: <br/>- arr1 (List[float]): The first vector.<br/>- arr2 (List[float]): The second vector.<br/>Returns: <br/>- float: The Euclidean distance between arr1 and arr2.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `arr1` | **Type:** list[float] |
+| `arr2` | **Type:** list[float] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| float | - float: The Euclidean distance between arr1 and arr2. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get
+
+```python
+get(
+    self,
+    ids: str | None = None,
+    include: str | None = None,
+    where: str | None = None,
+    limit: int | str | None = None,
+    offset: int | str | None = None
+) -> list[Document]
+```
+
+    Retrieve documents from the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | A list of document IDs.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+| `include` | The fields to include.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+| `where` | Additional filtering criteria.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+| `limit` | The maximum number of documents to retrieve.<br/><br/>**Type:** int \| str \| None<br/><br/>**Default:** None |
+| `offset` | The offset for pagination.<br/><br/>**Type:** int \| str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] | List: The retrieved documents. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### inner_product_distance
+
+```python
+inner_product_distance(arr1: list[float], arr2: list[float]) -> float
+```
+
+    Calculate the Euclidean distance between two vectors.<br/>Parameters: <br/>- arr1 (List[float]): The first vector.<br/>- arr2 (List[float]): The second vector.<br/>Returns: <br/>- float: The Euclidean distance between arr1 and arr2.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `arr1` | **Type:** list[float] |
+| `arr2` | **Type:** list[float] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| float | - float: The Euclidean distance between arr1 and arr2. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### modify
+
+```python
+modify(
+    self,
+    metadata,
+    collection_name: str | None = None
+) -> None
+```
+
+    Modify metadata for the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `metadata` | The new metadata.<br/><br/> |
+| `collection_name` | The name of the collection.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### query
+
+```python
+query(
+    self,
+    query_texts: list[str],
+    collection_name: str | None = None,
+    n_results: int | None = 10,
+    distance_type: str | None = 'euclidean',
+    distance_threshold: float | None = -1,
+    include_embedding: bool | None = False
+) -> list[list[tuple[Document, float]]]
+```
+
+    Query documents in the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `query_texts` | A list of query texts.<br/><br/>**Type:** list[str] |
+| `collection_name` | The name of the collection.<br/><br/>**Type:** str \| None<br/><br/>**Default:** None |
+| `n_results` | The maximum number of results to return.<br/><br/>**Type:** int \| None<br/><br/>**Default:** 10 |
+| `distance_type` | Distance search type - euclidean or cosine<br/><br/>**Type:** str \| None<br/><br/>**Default:** 'euclidean' |
+| `distance_threshold` | Distance threshold to limit searches<br/><br/>**Type:** float \| None<br/><br/>**Default:** -1 |
+| `include_embedding` | Include embedding values in QueryResults<br/><br/>**Type:** bool \| None<br/><br/>**Default:** False |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[list[tuple[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document), float]]] | QueryResults: The query results. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### set_collection_name
+
+```python
+set_collection_name(self, collection_name) -> str
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `collection_name` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### table_exists
+
+```python
+table_exists(self, table_name: str) -> bool
+```
+
+    Check if a table exists in the PostgreSQL database.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `table_name` | The name of the table to check.<br/><br/>**Type:** str |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| bool | bool: True if the table exists, False otherwise. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### update
+
+```python
+update(
+    self,
+    ids: list[str],
+    embeddings: list[Any],
+    metadatas: list[Any],
+    documents: list[Document]
+) -> None
+```
+
+    Update documents in the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | A list of document IDs.<br/><br/>**Type:** list[str] |
+| `embeddings` | A list of document embeddings.<br/><br/>**Type:** list[typing.Any] |
+| `metadatas` | A list of document metadatas.<br/><br/>**Type:** list[typing.Any] |
+| `documents` | A list of documents.<br/><br/>**Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### upsert
+
+```python
+upsert(
+    self,
+    ids: list[str | int],
+    documents: list[Document],
+    embeddings: list[Any] | None = None,
+    metadatas: list[Any] | None = None
+) -> None
+```
+
+    Upsert documents into the collection.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `ids` | A list of document IDs.<br/><br/>**Type:** list[str \| int] |
+| `documents` | A list of documents.<br/><br/>**Type:** list[[Document](/docs/api-reference/autogen/agentchat/contrib/vectordb/base/Document)] |
+| `embeddings` | A list of document embeddings.<br/><br/>**Type:** list[typing.Any] \| None<br/><br/>**Default:** None |
+| `metadatas` | A list of document metadatas.<br/><br/>**Type:** list[typing.Any] \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| None | None |
+
+<br />

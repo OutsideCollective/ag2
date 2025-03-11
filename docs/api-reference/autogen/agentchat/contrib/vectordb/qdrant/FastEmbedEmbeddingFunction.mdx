@@ -1,0 +1,31 @@
+---
+sidebarTitle: FastEmbedEmbeddingFunction
+title: autogen.agentchat.contrib.vectordb.qdrant.FastEmbedEmbeddingFunction
+---
+<h2 id="autogen.agentchat.contrib.vectordb.qdrant.FastEmbedEmbeddingFunction" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">FastEmbedEmbeddingFunction</span>
+</h2>
+
+```python
+FastEmbedEmbeddingFunction(
+    model_name: str = 'BAAI/bge-small-en-v1.5',
+    batch_size: int = 256,
+    cache_dir: str | None = None,
+    threads: int | None = None,
+    parallel: int | None = None,
+    **kwargs: Any
+)
+```
+
+    Embedding function implementation using FastEmbed - https://qdrant.github.io/fastembed.<br/>Initialize fastembed.TextEmbedding.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `model_name` | **Type:** str<br/><br/>**Default:** 'BAAI/bge-small-en-v1.5' |
+| `batch_size` | **Type:** int<br/><br/>**Default:** 256 |
+| `cache_dir` | **Type:** str \| None<br/><br/>**Default:** None |
+| `threads` | **Type:** int \| None<br/><br/>**Default:** None |
+| `parallel` | **Type:** int \| None<br/><br/>**Default:** None |
+| `**kwargs` | **Type:** Any |

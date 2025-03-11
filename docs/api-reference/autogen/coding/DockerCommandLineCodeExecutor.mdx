@@ -1,0 +1,123 @@
+---
+sidebarTitle: DockerCommandLineCodeExecutor
+title: autogen.coding.DockerCommandLineCodeExecutor
+---
+<h2 id="autogen.coding.DockerCommandLineCodeExecutor" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">DockerCommandLineCodeExecutor</span>
+</h2>
+
+```python
+DockerCommandLineCodeExecutor(
+    image: str = 'python:3-slim',
+    container_name: Optional[str] = None,
+    timeout: int = 60,
+    work_dir: Optional[Union[Path, str]] = None,
+    bind_dir: Optional[Union[Path, str]] = None,
+    auto_remove: bool = True,
+    stop_container: bool = True,
+    execution_policies: Optional[dict[str, bool]] = None
+)
+```
+
+    (Experimental) A code executor class that executes code blocks and returns the result.<br/>(Experimental) A code executor class that executes code through
+    a command line environment in a Docker container.<br/>The executor first saves each code block in a file in the working
+    directory, and then executes the code file in the container.<br/>The executor executes the code blocks in the order they are received.<br/>Currently, the executor only supports Python and shell scripts.<br/>For Python code, use the language "python" for the code block.<br/>For shell scripts, use the language "bash", "shell", or "sh" for the code
+    block.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `image` | **Type:** str<br/><br/>**Default:** 'python |
+| `container_name` | **Type:** Optional[str]<br/><br/>**Default:** None |
+| `timeout` | **Type:** int<br/><br/>**Default:** 60 |
+| `work_dir` | **Type:** Optional[Union[Path, str]]<br/><br/>**Default:** None |
+| `bind_dir` | **Type:** Optional[Union[Path, str]]<br/><br/>**Default:** None |
+| `auto_remove` | **Type:** bool<br/><br/>**Default:** True |
+| `stop_container` | **Type:** bool<br/><br/>**Default:** True |
+| `execution_policies` | **Type:** Optional[dict[str, bool]]<br/><br/>**Default:** None |
+
+### Class Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### DEFAULT_EXECUTION_POLICY
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### LANGUAGE_ALIASES
+<br />
+
+    <br />
+
+### Instance Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### bind_dir
+<br />
+
+    (Experimental) The binding directory for the code execution container.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### code_extractor
+<br />
+
+    (Experimental) Export a code extractor that can be used by an agent.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### timeout
+<br />
+
+    (Experimental) The timeout for code execution.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### work_dir
+<br />
+
+    (Experimental) The working directory for the code execution.
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### execute_code_blocks
+
+```python
+execute_code_blocks(self, code_blocks: list[CodeBlock]) -> CommandLineCodeResult
+```
+
+    (Experimental) Execute the code blocks and return the result.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `code_blocks` | The code blocks to execute.<br/><br/>**Type:** list[[CodeBlock](/docs/api-reference/autogen/coding/CodeBlock)] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| autogen.coding.base.CommandLineCodeResult | CommandlineCodeResult: The result of the code execution. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### restart
+
+```python
+restart(self) -> None
+```
+
+    (Experimental) Restart the code executor.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### stop
+
+```python
+stop(self) -> None
+```
+
+    (Experimental) Stop the code executor.
+
+<br />

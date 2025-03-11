@@ -1,0 +1,375 @@
+---
+custom_edit_url: https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_graph_rag_neo4j_native.ipynb
+description: Neo4j Native GraphRAG utilizes a knowledge graph and can be added as
+  a capability to agents.
+source_notebook: /notebook/agentchat_graph_rag_neo4j_native.ipynb
+tags:
+- RAG
+title: Using Neo4j's native GraphRAG SDK with AG2 agents for Question & Answering
+---
+
+<a href="https://colab.research.google.com/github/ag2ai/ag2/blob/main/notebook/agentchat_graph_rag_neo4j_native.ipynb" class="colab-badge" target="_blank"><img noZoom src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a>
+<a href="https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_graph_rag_neo4j_native.ipynb" class="github-badge" target="_blank"><img noZoom src="https://img.shields.io/badge/Open%20on%20GitHub-grey?logo=github" alt="Open on GitHub" /></a>
+
+
+
+
+AG2 provides GraphRAG integration through agent capabilities. This is an
+example utilizing the integration of Neo4j’s native GraphRAG SDK. The
+Neo4j native query engine enables the construction of a knowledge graph
+from a single text or PDF file. Additionally, you can define custom
+entities, relationships, or schemas to guide the graph-building process.
+Once created, you can integrate the RAG capabilities into AG2 agents to
+query the knowledge graph effectively.
+
+
+<div class="info Requirements">
+<Info>
+To install the neo4j GraphRAG SDK with OpenAI LLM
+
+```bash
+sudo apt-get install graphviz graphviz-dev
+pip install pygraphviz
+pip install "neo4j-graphrag[openai, experimental]"
+```
+</Info>
+</div>
+
+
+## Set Configuration and OpenAI API Key
+
+By default, in order to use OpenAI LLM with Neo4j you need to have an
+OpenAI key in your environment variable `OPENAI_API_KEY`.
+
+You can utilize an OAI_CONFIG_LIST file and extract the OpenAI API key
+and put it in the environment, as will be shown in the following cell.
+
+Alternatively, you can load the environment variable yourself.
+
+
+<div class="tip">
+<Tip>
+Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
+</Tip>
+</div>
+
+
+```python
+import os
+
+import autogen
+
+config_list = autogen.config_list_from_json(env_or_file="OAI_CONFIG_LIST")
+
+# Put the OpenAI API key into the environment
+os.environ["OPENAI_API_KEY"] = config_list[0]["api_key"]
+```
+
+
+```python
+# This is needed to allow nested asyncio calls for Neo4j in Jupyter
+import nest_asyncio
+
+nest_asyncio.apply()
+```
+
+# Set up LLM models
+
+**Important**  
+- **Default Models**: - **Knowledge Graph Construction** OpenAI’s
+`GPT-4o` with `json_object` output `temperature=0.0`. - **Question
+Answering**: OpenAI’s `GPT-4o` with `temperature=0.0`. - **Embedding**:
+OpenAI’s `text-embedding-3-large`. You need to provide its dimension for
+the query engine later.
+
+-   **Customization**: You can change these defaults by setting the
+    following parameters on the `Neo4jNativeGraphQueryEngine`:
+    -   `llm`: Specify a LLM instance with a llm you like for graph
+        construction, it **must support json format response**
+    -   `query_llm`: Specify a LLM instance with a llm you like for
+        querying. **Don’t use json format response.**
+    -   `embedding`: Specify a Embedder instance with a embedding model.
+
+Learn more about configuring other LLM providers for agents
+[here](https://github.com/neo4j/neo4j-graphrag-python?tab=readme-ov-file#optional-dependencies).
+
+```python
+from neo4j_graphrag.embeddings import OpenAIEmbeddings
+from neo4j_graphrag.llm.openai_llm import OpenAILLM
+
+llm = OpenAILLM(
+    model_name="gpt-4o",
+    model_params={
+        "response_format": {"type": "json_object"},  # Json format response is required for the LLM
+        "temperature": 0,
+    },
+)
+
+query_llm = OpenAILLM(
+    model_name="gpt-4o",
+    model_params={"temperature": 0},  # Don't use json format response for the query LLM
+)
+
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+```
+
+
+```python
+# Imports
+from autogen import ConversableAgent, UserProxyAgent
+from autogen.agentchat.contrib.graph_rag.document import Document, DocumentType
+from autogen.agentchat.contrib.graph_rag.neo4j_native_graph_query_engine import Neo4jNativeGraphQueryEngine
+from autogen.agentchat.contrib.graph_rag.neo4j_native_graph_rag_capability import Neo4jNativeGraphCapability
+```
+
+## Create a Knowledge Graph with Your Own Data
+
+**Note:** You need to have a Neo4j database running. If you are running
+one in a Docker container, please ensure your Docker network is setup to
+allow access to it.
+
+In this example, the Neo4j endpoint is set to host=“bolt://172.17.0.3”
+and port=7687, please adjust accordingly. For how to spin up a Neo4j
+with Docker, you can refer to
+[this](https://docs.llamaindex.ai/en/stable/examples/property_graph/property_graph_neo4j/#:~:text=stores%2Dneo4j-,Docker%20Setup,%C2%B6,-To%20launch%20Neo4j)
+
+### A Simple Example
+
+In this example, the graph schema is auto-generated. Entities and
+relationships are created as they fit into the data
+
+Neo4j GraphRAG SDK supports single document of 2 input types – txt and
+pdf (images will be skipped).
+
+We start by creating a Neo4j knowledge graph with a sample text.
+
+```python
+# load documents
+# To use text data, you need to:
+# 1. Specify the type as TEXT
+# 2. Pass the path to the text file
+
+input_path = "../test/agentchat/contrib/graph_rag/BUZZ_Employee_Handbook.txt"
+input_document = [Document(doctype=DocumentType.TEXT, path_or_url=input_path)]
+```
+
+First we need to use the query engine to initialize the database. It
+performs the follows steps:
+
+1.  Clears the existing database.
+2.  Extracts graph nodes and relationships from the input data to build
+    a knowledge graph.
+3.  Creates a vector index for efficient retrieval.
+
+```python
+query_engine = Neo4jNativeGraphQueryEngine(
+    host="bolt://172.17.0.3",  # Change
+    port=7687,  # if needed
+    username="neo4j",  # Change if you reset username
+    password="password",  # Change if you reset password
+    llm=llm,  # change to the LLM model you want to use
+    embeddings=embeddings,  # change to the embeddings model you want to use
+    query_llm=query_llm,  # change to the query LLM model you want to use
+    embedding_dimension=3072,  # must match the dimension of the embeddings model
+)
+
+# initialize the database (it will delete any pre-existing data)
+query_engine.init_db(input_document)
+```
+
+### Add capability to a ConversableAgent and query them
+
+The rag capability enables the agent to perform local search on the
+knowledge graph using the vector index created in the previous step.
+
+```python
+# Create a ConversableAgent (no LLM configuration)
+graph_rag_agent = ConversableAgent(
+    name="buzz_agent",
+    human_input_mode="NEVER",
+)
+
+# Associate the capability with the agent
+graph_rag_capability = Neo4jNativeGraphCapability(query_engine)
+graph_rag_capability.add_to_agent(graph_rag_agent)
+
+# Create a user proxy agent to converse with our RAG agent
+user_proxy = UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="ALWAYS",
+)
+
+user_proxy.initiate_chat(graph_rag_agent, message="Who is the employer?")
+```
+
+### Revisit the example by defining custom entities, relations and schema
+
+By providing custom entities, relations and schema, you could guide the
+engine to create a graph that better extracts the structure within the
+data. Custom schema must use provided entities and relations.
+
+```python
+# Custom entities, relations and schema that fits the document
+
+entities = ["EMPLOYEE", "EMPLOYER", "POLICY", "BENEFIT", "POSITION", "DEPARTMENT", "CONTRACT", "RESPONSIBILITY"]
+relations = [
+    "FOLLOWS",
+    "PROVIDES",
+    "APPLIES_TO",
+    "ASSIGNED_TO",
+    "PART_OF",
+    "REQUIRES",
+    "ENTITLED_TO",
+    "REPORTS_TO",
+]
+
+potential_schema = [
+    ("EMPLOYEE", "FOLLOWS", "POLICY"),
+    ("EMPLOYEE", "ASSIGNED_TO", "POSITION"),
+    ("EMPLOYEE", "REPORTS_TO", "DEPARTMENT"),
+    ("EMPLOYER", "PROVIDES", "BENEFIT"),
+    ("EMPLOYER", "REQUIRES", "RESPONSIBILITY"),
+    ("POLICY", "APPLIES_TO", "EMPLOYEE"),
+    ("POLICY", "APPLIES_TO", "CONTRACT"),
+    ("POLICY", "REQUIRES", "RESPONSIBILITY"),
+    ("BENEFIT", "ENTITLED_TO", "EMPLOYEE"),
+    ("POSITION", "PART_OF", "DEPARTMENT"),
+    ("POSITION", "ASSIGNED_TO", "EMPLOYEE"),
+    ("CONTRACT", "REQUIRES", "RESPONSIBILITY"),
+    ("CONTRACT", "APPLIES_TO", "EMPLOYEE"),
+    ("RESPONSIBILITY", "ASSIGNED_TO", "POSITION"),
+]
+```
+
+
+```python
+query_engine = Neo4jNativeGraphQueryEngine(
+    host="bolt://172.17.0.3",  # Change
+    port=7687,  # if needed
+    username="neo4j",  # Change if you reset username
+    password="password",  # Change if you reset password
+    llm=llm,  # change to the LLM model you want to use
+    embeddings=embeddings,  # change to the embeddings model you want to use
+    query_llm=query_llm,  # change to the query LLM model you want to use
+    embedding_dimension=3072,  # must match the dimension of the embeddings model
+    entities=entities,
+    relations=relations,
+    potential_schema=potential_schema,
+)
+
+# initialize the database (it will delete any pre-existing data)
+query_engine.init_db(input_document)
+```
+
+## Query the graph rag agent again
+
+If you inspect the database, you should find more nodes are created in
+the graph for each chunk of data this time. However, given the simple
+structure of input, the difference is not apparent in querying.
+
+```python
+# Create a ConversableAgent (no LLM configuration)
+graph_rag_agent = ConversableAgent(
+    name="buzz_agent",
+    human_input_mode="NEVER",
+)
+
+# Associate the capability with the agent
+graph_rag_capability = Neo4jNativeGraphCapability(query_engine)
+graph_rag_capability.add_to_agent(graph_rag_agent)
+
+# Create a user proxy agent to converse with our RAG agent
+user_proxy = UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="ALWAYS",
+)
+
+user_proxy.initiate_chat(graph_rag_agent, message="Who is the employer?")
+```
+
+### Another example with pdf format input
+
+```python
+# load documents
+
+# To use pdf data, you need to
+# 1. Specify the type as PDF
+# 2. Pass the path to the PDF file
+input_path = "../test/agentchat/contrib/graph_rag/BUZZ_Employee_Handbook.pdf"
+input_document = [Document(doctype=DocumentType.PDF, path_or_url=input_path)]
+```
+
+
+```python
+query_engine = Neo4jNativeGraphQueryEngine(
+    host="bolt://172.17.0.3",  # Change
+    port=7687,  # if needed
+    username="neo4j",  # Change if you reset username
+    password="password",  # Change if you reset password
+    llm=llm,  # change to the LLM model you want to use
+    embeddings=embeddings,  # change to the embeddings model you want to use
+    query_llm=query_llm,  # change to the query LLM model you want to use
+    embedding_dimension=3072,  # must match the dimension of the embeddings model
+)
+
+# initialize the database (it will delete any pre-existing data)
+query_engine.init_db(input_document)
+```
+
+
+```python
+# Create a ConversableAgent (no LLM configuration)
+graph_rag_agent = ConversableAgent(
+    name="buzz_agent",
+    human_input_mode="NEVER",
+)
+
+# Associate the capability with the agent
+graph_rag_capability = Neo4jNativeGraphCapability(query_engine)
+graph_rag_capability.add_to_agent(graph_rag_agent)
+
+# Create a user proxy agent to converse with our RAG agent
+user_proxy = UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="ALWAYS",
+)
+
+user_proxy.initiate_chat(graph_rag_agent, message="Who is the employer?")
+```
+
+### Incrementally add new documents to the existing knowledge graph. 
+
+We add another document and build it into the existing graph
+
+```python
+input_path = "../test/agentchat/contrib/graph_rag/the_matrix.txt"
+input_documents = [Document(doctype=DocumentType.TEXT, path_or_url=input_path)]
+
+_ = query_engine.add_records(input_documents)
+```
+
+Let’s query the graph about both old and new documents
+
+```python
+# Create a ConversableAgent (no LLM configuration)
+graph_rag_agent = ConversableAgent(
+    name="new_agent",
+    human_input_mode="NEVER",
+)
+
+# Associate the capability with the agent
+graph_rag_capability = Neo4jNativeGraphCapability(query_engine)
+graph_rag_capability.add_to_agent(graph_rag_agent)
+
+# Create a user proxy agent to converse with our RAG agent
+user_proxy = UserProxyAgent(
+    name="user_proxy",
+    human_input_mode="ALWAYS",
+)
+
+user_proxy.initiate_chat(graph_rag_agent, message="Who is the employer?")
+```
+
+<div className="edit-url-container">
+    <a className="edit-url" href="https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_graph_rag_neo4j_native.ipynb" target='_blank'><Icon icon="pen" iconType="solid" size="13px"/> Edit this page</a>
+</div>

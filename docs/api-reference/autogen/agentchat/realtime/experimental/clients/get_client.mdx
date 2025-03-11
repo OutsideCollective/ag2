@@ -1,0 +1,31 @@
+---
+sidebarTitle: get_client
+title: autogen.agentchat.realtime.experimental.clients.get_client
+---
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>
+#### get_client
+
+```python
+get_client(
+    llm_config: dict[str, Any],
+    logger: Logger,
+    **kwargs: Any
+) -> RealtimeClientProtocol
+```
+
+    Get a registered Realtime API client.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `llm_config` | The config for the client.<br/><br/>**Type:** dict[str, typing.Any] |
+| `logger` | The logger to use for logging events.<br/><br/>**Type:** logging.Logger |
+| `**kwargs` | Additional arguments.<br/><br/>**Type:** Any |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| [RealtimeClientProtocol](/docs/api-reference/autogen/agentchat/realtime/experimental/clients/RealtimeClientProtocol) | RealtimeClientProtocol: The Realtime API client. |
+
+<br />

@@ -1,0 +1,71 @@
+---
+sidebarTitle: AgentOptimizer
+title: autogen.agentchat.contrib.agent_optimizer.AgentOptimizer
+---
+<h2 id="autogen.agentchat.contrib.agent_optimizer.AgentOptimizer" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">AgentOptimizer</span>
+</h2>
+
+```python
+AgentOptimizer(
+    max_actions_per_step: int,
+    llm_config: dict[str, Any],
+    optimizer_model: str | None = 'gpt-4-1106-preview'
+)
+```
+
+    Base class for optimizing AG2 agents. Specifically, it is used to optimize the functions used in the agent.<br/>More information could be found in the following paper: https://arxiv.org/abs/2402.11359.<br/>(These APIs are experimental and may change in the future.)
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `max_actions_per_step` | **Type:** int |
+| `llm_config` | **Type:** dict[str, typing.Any] |
+| `optimizer_model` | **Type:** str \| None<br/><br/>**Default:** 'gpt-4-1106-preview' |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### record_one_conversation
+
+```python
+record_one_conversation(
+    self,
+    conversation_history: list[dict[str, Any]],
+    is_satisfied: bool = None
+) -> 
+```
+
+    Record one conversation history.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `conversation_history` | the chat messages of the conversation.<br/><br/>**Type:** list[dict[str, typing.Any]] |
+| `is_satisfied` | whether the user is satisfied with the solution.<br/><br/>If it is none, the user will be asked to input the satisfaction.<br/><br/>**Type:** bool<br/><br/>**Default:** None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### reset_optimizer
+
+```python
+reset_optimizer(self) -> 
+```
+
+    Reset the optimizer.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### step
+
+```python
+step(self) -> 
+```
+
+    One step of training. It will return register_for_llm and register_for_executor at each iteration,
+    which are subsequently utilized to update the assistant and executor agents, respectively.<br/>See example: https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_agentoptimizer.ipynb
+
+<br />

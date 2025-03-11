@@ -1,0 +1,120 @@
+---
+sidebarTitle: MemoStore
+title: autogen.agentchat.contrib.capabilities.teachability.MemoStore
+---
+<h2 id="autogen.agentchat.contrib.capabilities.teachability.MemoStore" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">MemoStore</span>
+</h2>
+
+```python
+MemoStore(
+    verbosity: int | None = 0,
+    reset: bool | None = False,
+    path_to_db_dir: str | None = './tmp/teachable_agent_db'
+)
+```
+
+    Provides memory storage and retrieval for a teachable agent, using a vector database.<br/>Each DB entry (called a memo) is a pair of strings: an input text and an output text.<br/>The input text might be a question, or a task to perform.<br/>The output text might be an answer to the question, or advice on how to perform the task.<br/>Vector embeddings are currently supplied by Chroma's default Sentence Transformers.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `verbosity` | **Type:** int \| None<br/><br/>**Default:** 0 |
+| `reset` | **Type:** bool \| None<br/><br/>**Default:** False |
+| `path_to_db_dir` | **Type:** str \| None<br/><br/>**Default:** './tmp/teachable_agent_db' |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### add_input_output_pair
+
+```python
+add_input_output_pair(
+    self,
+    input_text: str,
+    output_text: str
+) -> 
+```
+
+    Adds an input-output pair to the vector DB.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `input_text` | **Type:** str |
+| `output_text` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_nearest_memo
+
+```python
+get_nearest_memo(self, query_text: str) -> 
+```
+
+    Retrieves the nearest memo to the given query text.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `query_text` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_related_memos
+
+```python
+get_related_memos(
+    self,
+    query_text: str,
+    n_results: int,
+    threshold: int | float
+) -> 
+```
+
+    Retrieves memos that are related to the given query text within the specified distance threshold.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `query_text` | **Type:** str |
+| `n_results` | **Type:** int |
+| `threshold` | **Type:** int \| float |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### list_memos
+
+```python
+list_memos(self) -> 
+```
+
+    Prints the contents of MemoStore.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### prepopulate
+
+```python
+prepopulate(self) -> 
+```
+
+    Adds a few arbitrary examples to the vector DB, just to make retrieval less trivial.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### reset_db
+
+```python
+reset_db(self) -> 
+```
+
+    Forces immediate deletion of the DB's contents, in memory and on disk.
+
+<br />

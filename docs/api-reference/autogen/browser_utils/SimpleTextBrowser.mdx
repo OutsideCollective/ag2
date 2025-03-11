@@ -1,0 +1,107 @@
+---
+sidebarTitle: SimpleTextBrowser
+title: autogen.browser_utils.SimpleTextBrowser
+---
+<h2 id="autogen.browser_utils.SimpleTextBrowser" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">SimpleTextBrowser</span>
+</h2>
+
+```python
+SimpleTextBrowser(
+    start_page: str | None = None,
+    viewport_size: int | None = 8192,
+    downloads_folder: str | None = None,
+    bing_base_url: str = 'https://api.bing.microsoft.com/v7.0/search',
+    bing_api_key: str | None = None,
+    request_kwargs: dict[str, Any] | None = None
+)
+```
+
+    (In preview) An extremely simple text-based web browser comparable to Lynx. Suitable for Agentic use.<br/>Initialize the browser with the given parameters.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `start_page` | **Type:** str \| None<br/><br/>**Default:** None |
+| `viewport_size` | **Type:** int \| None<br/><br/>**Default:** 8192 |
+| `downloads_folder` | **Type:** str \| None<br/><br/>**Default:** None |
+| `bing_base_url` | **Type:** str<br/><br/>**Default:** 'https |
+| `bing_api_key` | **Type:** str \| None<br/><br/>**Default:** None |
+| `request_kwargs` | **Type:** dict[str, typing.Any] \| None<br/><br/>**Default:** None |
+
+### Instance Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### address
+<br />
+
+    Return the address of the current page.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### page_content
+<br />
+
+    Return the full contents of the current page.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### viewport
+<br />
+
+    Return the content of the current viewport.
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### page_down
+
+```python
+page_down(self) -> None
+```
+
+    Move the viewport down by one page.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### page_up
+
+```python
+page_up(self) -> None
+```
+
+    Move the viewport up by one page.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### set_address
+
+```python
+set_address(self, uri_or_path: str) -> None
+```
+
+    Set the address of the current page.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `uri_or_path` | The URI or path to set as the current page.<br/><br/>**Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### visit_page
+
+```python
+visit_page(self, path_or_uri: str) -> str
+```
+
+    Update the address, visit the page, and return the content of the viewport.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `path_or_uri` | The URI or path to visit.<br/><br/>**Type:** str |
+
+<br />

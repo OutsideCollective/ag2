@@ -1,0 +1,69 @@
+---
+sidebarTitle: ImageGeneration
+title: autogen.agentchat.contrib.capabilities.generate_images.ImageGeneration
+---
+<h2 id="autogen.agentchat.contrib.capabilities.generate_images.ImageGeneration" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">ImageGeneration</span>
+</h2>
+
+```python
+ImageGeneration(
+    image_generator: ImageGenerator,
+    cache: AbstractCache | None = None,
+    text_analyzer_llm_config: dict[str, Any] | None = None,
+    text_analyzer_instructions: str = 'In detail, please summarize the provided prompt to generate the image described in the TEXT.\nDO NOT include any advice. RESPOND like the following example:\nEXAMPLE: Blue background, 3D shapes, ...\n',
+    verbosity: int = 0,
+    register_reply_position: int = 2
+)
+```
+
+    This capability allows a ConversableAgent to generate images based on the message received from other Agents.<br/>1. Utilizes a TextAnalyzerAgent to analyze incoming messages to identify requests for image generation and
+        extract relevant details.<br/>2. Leverages the provided ImageGenerator (e.g., DalleImageGenerator) to create the image.<br/>3. Optionally caches generated images for faster retrieval in future conversations.<br/>NOTE: This capability increases the token usage of the agent, as it uses TextAnalyzerAgent to analyze every
+        message received by the agent.<br/>Example: <br/>    ```python
+        import autogen
+        from autogen.agentchat.contrib.capabilities.image_generation import ImageGeneration
+    
+        # Assuming you have llm configs configured for the LLMs you want to use and Dalle.<br/>    # Create the agent
+        agent = autogen.ConversableAgent(
+            name="dalle", llm_config=\{...}, max_consecutive_auto_reply=3, human_input_mode="NEVER"
+        )
+    
+        # Create an ImageGenerator with desired settings
+        dalle_gen = generate_images.DalleImageGenerator(llm_config=\{...})
+    
+        # Add the ImageGeneration capability to the agent
+        agent.add_capability(ImageGeneration(image_generator=dalle_gen))
+        ```
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `image_generator` | **Type:** [ImageGenerator](/docs/api-reference/autogen/agentchat/contrib/capabilities/generate_images/ImageGenerator) |
+| `cache` | **Type:** [AbstractCache](/docs/api-reference/autogen/cache/AbstractCache) \| None<br/><br/>**Default:** None |
+| `text_analyzer_llm_config` | **Type:** dict[str, typing.Any] \| None<br/><br/>**Default:** None |
+| `text_analyzer_instructions` | **Type:** str<br/><br/>**Default:** 'In detail, please summarize the provided prompt to generate the image described in the TEXT.\nDO NOT include any advice. RESPOND like the following example |
+| `verbosity` | The verbosity level.<br/><br/>Defaults to 0 and must be greater than or equal to 0. The text analyzer llm calls will be silent if verbosity is less than 2.br/>register_reply_position (int): The position of the reply function in the agent's list of reply functions.br/> This capability registers a new reply function to handle messages with image generation requests.br/> Defaults to 2 to place it after the check termination and human reply for a ConversableAgent.<br/><br/>**Type:** int<br/><br/>**Default:** 0 |
+| `register_reply_position` | **Type:** int<br/><br/>**Default:** 2 |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### add_to_agent
+
+```python
+add_to_agent(self, agent: ConversableAgent) -> 
+```
+
+    Adds the Image Generation capability to the specified ConversableAgent.<br/>This function performs the following modifications to the agent: <br/>1. Registers a reply function: A new reply function is registered with the agent to handle messages that
+       potentially request image generation. This function analyzes the message and triggers image generation if
+       necessary.<br/>2. Creates an Agent (TextAnalyzerAgent): This is used to analyze messages for image generation requirements.<br/>3. Updates System Message: The agent's system message is updated to include a message indicating the
+       capability to generate images has been added.<br/>4. Updates Description: The agent's description is updated to reflect the addition of the Image Generation
+       capability. This might be helpful in certain use cases, like group chats.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `agent` | The ConversableAgent to add the capability to.<br/><br/>**Type:** [ConversableAgent](/docs/api-reference/autogen/ConversableAgent) |
+
+<br />

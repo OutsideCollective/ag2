@@ -8,55 +8,73 @@ See [here](https://github.com/ag2ai/ag2/blob/main/notebook/contributing.md#how-t
 
 ## Build documentation locally
 
-1. To build and test documentation locally, first install [Node.js](https://nodejs.org/en/download/). For example,
+Follow these steps to build and serve the documentation on your local machine:
 
-```bash
-nvm install --lts
-```
+1. Install Node.js:
+    - Download and install [Node.js](https://nodejs.org/en/download/)
 
-Then, install the required packages by running the following commands:
+2.  Install Quarto:
+    - Visit the Quarto download [page](https://quarto.org/docs/download/).
+    - Click on the Pre-release tab and download the latest version of Quarto.
+    - Ensure you install version `1.5.23` or higher.
 
-```bash
-pip install pydoc-markdown pyyaml termcolor nbclient
-```
+3. Install Required Python Packages:
+    - From the project root directory, install the necessary Python packages by running:
 
-2. You also need to install quarto. Please click on the `Pre-release` tab from [this website](https://quarto.org/docs/download/) to download the latest version of `quarto` and install it. Ensure that the `quarto` version is `1.5.23` or higher.
+    ```console
+    pip install -e ".[docs]"
+    ```
 
-3. Finally, run the following commands to build and serve the documentation:
+4. Build and Serve the Documentation:
 
-```console
-cd website
-python ./process_api_reference.py
-python ./process_notebooks.py render
-npm install
-npm run mintlify:dev
-```
+    - To build and serve the documentation locally, run the following command from the project root directory:
 
-The last command starts a local development server and opens up a browser window.
-Most changes are reflected live without having to restart the server.
+        ```console
+        ./scripts/docs_serve.sh
+        ```
 
-## Build with Docker
+    - Optionally, you can pass the `--force` flag to clean up all temporary files and generate the documentation from scratch:
 
-To build and test documentation within a docker container, run the following commands from your project root directory:
+        ```console
+        ./scripts/docs_serve.sh --force
+        ```
 
-```bash
-docker build -f .devcontainer/dev/Dockerfile -t ag2ai_dev_img https://github.com/ag2ai/ag2.git#main
-```
+    - The above command starts a local development server and opens up a browser window.
 
-Then start the container like so, this will log you in and ensure that Docker port 3000 is mapped to port 8081 on your local machine:
+5. Handling Updates or Changes:
 
-```bash
-docker run -it -p 8081:3000 -v $(pwd):/home/autogen/ag2 ag2ai_dev_img bash
-```
+    - Whenever you update the documentation, stop the server and re-run the `./scripts/docs_serve.sh` command to serve the docs with the latest changes and view them live.
 
-Once at the CLI in Docker run the following commands:
+    - If deleted files are still displayed, it indicates cached or temporary files may be causing issues. To resolve this, use the `--force` flag to clean the build directory and regenerate the documentation.
 
-```console
-cd website
-python ./process_api_reference.py
-python ./process_notebooks.py render
-npm install
-npm run mintlify:dev
-```
+By following these steps, you can build, serve, and update the documentation locally.
 
-Once done you should be able to access the documentation at `http://127.0.0.1:8081`
+## Build with Dev Containers
+
+To build and test documentation using Dev Containers, open the project using [VSCode](https://code.visualstudio.com/), press `Ctrl+Shift+P` and select `Dev Containers: Reopen in Container`.
+
+This will open the project in a Dev Container with all the required dependencies installed.
+
+Build and Serve the Documentation:
+
+    - Open a terminal and run the following commands from the project root directory to build and serve the documentation:
+
+        ```console
+        pip install -e ".[docs]"
+        ./scripts/docs_serve.sh
+        ```
+
+    - Optionally, you can pass the `--force` flag to clean up all temporary files and generate the documentation from scratch:
+
+        ```console
+        pip install -e ".[docs]"
+        ./scripts/docs_serve.sh --force
+        ```
+
+    Once done you should be able to access the documentation at `http://localhost:3000/`.
+
+Handling Updates or Changes:
+
+    - Whenever you update the documentation, stop the server and re-run the `./scripts/docs_serve.sh` command to serve the docs with the latest changes and view them live.
+
+    - If deleted files are still displayed, it indicates cached or temporary files may be causing issues. To resolve this, use the `--force` flag to clean the build directory and regenerate the documentation.

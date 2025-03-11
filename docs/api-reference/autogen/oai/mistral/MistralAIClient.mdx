@@ -1,0 +1,101 @@
+---
+sidebarTitle: MistralAIClient
+title: autogen.oai.mistral.MistralAIClient
+---
+<h2 id="autogen.oai.mistral.MistralAIClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">MistralAIClient</span>
+</h2>
+
+```python
+MistralAIClient(**kwargs)
+```
+
+    Client for Mistral.AI's API.<br/>Requires api_key or environment variable to be set
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `**kwargs` |  |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### cost
+
+```python
+cost(self, response) -> float
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create
+
+```python
+create(self, params: dict[str, Any]) -> ChatCompletionExtended
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | **Type:** dict[str, typing.Any] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_usage
+
+```python
+get_usage(response: ChatCompletionExtended) -> dict
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | **Type:** autogen.oai.oai_models.chat_completion.ChatCompletionExtended |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### message_retrieval
+
+```python
+message_retrieval(self, response: ChatCompletionExtended) -> list[str] | list[ChatCompletionMessage]
+```
+
+    Retrieve the messages from the response.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` | **Type:** autogen.oai.oai_models.chat_completion.ChatCompletionExtended |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### parse_params
+
+```python
+parse_params(self, params: dict[str, Any]) -> dict[str, Any]
+```
+
+    Loads the parameters for Mistral.AI API from the passed in parameters and returns a validated set. Checks types, ranges, and sets defaults
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | **Type:** dict[str, typing.Any] |
+
+<br />

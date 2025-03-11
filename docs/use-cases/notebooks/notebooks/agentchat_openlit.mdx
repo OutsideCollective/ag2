@@ -1,0 +1,173 @@
+---
+custom_edit_url: https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_openlit.ipynb
+description: Use OpenLIT to easily monitor AI agents in production with OpenTelemetry.
+source_notebook: /notebook/agentchat_openlit.ipynb
+tags:
+- integration
+- monitoring
+- observability
+- debugging
+title: Agent Observability with OpenLIT
+---
+
+<a href="https://colab.research.google.com/github/ag2ai/ag2/blob/main/notebook/agentchat_openlit.ipynb" class="colab-badge" target="_blank"><img noZoom src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a>
+<a href="https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_openlit.ipynb" class="github-badge" target="_blank"><img noZoom src="https://img.shields.io/badge/Open%20on%20GitHub-grey?logo=github" alt="Open on GitHub" /></a>
+
+
+
+
+export const quartoRawHtml =
+[`
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 40%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Parameter/Environment Variable</th>
+<th>For Sending to OpenLIT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Send data to an HTTP OTLP endpoint</td>
+<td><code>otlp_endpoint</code> or <code>OTEL_EXPORTER_OTLP_ENDPOINT</code></td>
+<td><code>"http://127.0.0.1:4318"</code></td>
+</tr>
+<tr>
+<td>Authenticate telemetry backends</td>
+<td><code>otlp_headers</code> or <code>OTEL_EXPORTER_OTLP_HEADERS</code></td>
+<td>Not required by default</td>
+</tr>
+</tbody>
+</table>
+`];
+
+<img src="https://github.com/openlit/.github/blob/main/profile/assets/wide-logo-no-bg.png?raw=true" alt="OpenLIT Logo for LLM Observability" width="30%"></img>
+
+[OpenLIT](https://github.com/openlit/openlit) an open source product
+that helps developers build and manage AI agents in production,
+effectively helping them improve accuracy. As a self-hosted solution, it
+enables developers to experiment with LLMs, manage and version prompts,
+securely manage API keys, and provide safeguards against prompt
+injection and jailbreak attempts. It also includes built-in
+OpenTelemetry-native observability and evaluation for the complete GenAI
+stack (LLMs, Agents, vector databases, and GPUs).
+
+For more info, check out the [OpenLIT
+Repo](https://github.com/openlit/openlit)
+
+![](https://github.com/openlit/.github/blob/main/profile/assets/openlit-client-1.png?raw=true)
+![](https://github.com/openlit/.github/blob/main/profile/assets/openlit-client-2.png?raw=true)
+
+## Adding OpenLIT to an existing AG2 (Now AG2) service
+
+To get started, you’ll need to install the OpenLIT library
+
+OpenLIT uses OpenTelemetry to automatically instrument the AI Agent app
+when it’s initialized meaning your agent observability data like
+execution traces and metrics will be tracked in just one line of code.
+
+```python
+! pip install -U ag2[openai] openlit
+```
+
+
+```python
+import openlit
+
+from autogen import AssistantAgent, UserProxyAgent
+
+openlit.init()
+```
+
+OpenLIT will now start automatically tracking
+
+-   LLM prompts and completions
+-   Token usage and costs
+-   Agent names and actions
+-   Tool usage
+-   Errors
+
+## Lets look at a simple chat example
+
+```python
+import openlit
+
+openlit.init()
+```
+
+
+```python
+import os
+
+llm_config = {"model": "gpt-4", "api_key": os.environ["OPENAI_API_KEY"]}
+assistant = AssistantAgent("assistant", llm_config=llm_config)
+user_proxy = UserProxyAgent("user_proxy", code_execution_config=False)
+
+# Start the chat
+user_proxy.initiate_chat(
+    assistant,
+    message="Tell me a joke about NVDA and TESLA stock prices.",
+)
+```
+
+# Sending Traces and metrics to OpenLIT
+
+By default, OpenLIT generates OpenTelemetry traces and metrics that are
+logged to your console. To set up a detailed monitoring environment,
+this guide outlines how to deploy OpenLIT and direct all traces and
+metrics there. You also have the flexibility to send the telemetry data
+to any OpenTelemetry-compatible endpoint, such as Grafana, Jaeger, or
+DataDog.
+
+## Deploy OpenLIT Stack
+
+1.  Clone the OpenLIT Repository
+
+    Open your terminal or command line and execute:
+
+    ```shell
+    git clone git@github.com:openlit/openlit.git
+    ```
+
+2.  Host it Yourself with Docker
+
+    Deploy and start OpenLIT using the command:
+
+    ```shell
+    docker compose up -d
+    ```
+
+> For instructions on installing in Kubernetes using Helm, refer to the
+> [Kubernetes Helm installation
+> guide](https://docs.openlit.io/latest/installation#kubernetes).
+
+Configure the telemetry data destination as follows:
+
+<div dangerouslySetInnerHTML={{ __html: quartoRawHtml[0] }} />
+
+> 💡 Info: If the `otlp_endpoint` or `OTEL_EXPORTER_OTLP_ENDPOINT` is
+> not provided, the OpenLIT SDK will output traces directly to your
+> console, which is recommended during the development phase.
+
+## Visualize and Optimize!
+
+With the Observability data now being collected and sent to OpenLIT, the
+next step is to visualize and analyze this data to get insights into
+your AI application’s performance, behavior, and identify areas of
+improvement.
+
+Just head over to OpenLIT at `127.0.0.1:3000` on your browser to start
+exploring. You can login using the default credentials - **Email**:
+`user@openlit.io` - **Password**: `openlituser`
+
+![](https://github.com/openlit/.github/blob/main/profile/assets/openlit-ag2-1.png?raw=true)
+![](https://github.com/openlit/.github/blob/main/profile/assets/openlit-ag2-2.png?raw=true)
+
+<div className="edit-url-container">
+    <a className="edit-url" href="https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_openlit.ipynb" target='_blank'><Icon icon="pen" iconType="solid" size="13px"/> Edit this page</a>
+</div>

@@ -1,0 +1,81 @@
+---
+sidebarTitle: RedisCache
+title: autogen.cache.redis_cache.RedisCache
+---
+<h2 id="autogen.cache.redis_cache.RedisCache" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">RedisCache</span>
+</h2>
+
+```python
+RedisCache(seed: str | int, redis_url: str)
+```
+
+    Implementation of AbstractCache using the Redis database.<br/>This class provides a concrete implementation of the AbstractCache
+    interface using the Redis database for caching data.<br/>Attributes: <br/>    seed (Union[str, int]): A seed or namespace used as a prefix for cache keys.<br/>    cache (redis.Redis): The Redis client used for caching.<br/>Methods: <br/>    __init__(self, seed, redis_url): Initializes the RedisCache with the given seed and Redis URL.<br/>    _prefixed_key(self, key): Internal method to get a namespaced cache key.<br/>    get(self, key, default=None): Retrieves an item from the cache.<br/>    set(self, key, value): Sets an item in the cache.<br/>    close(self): Closes the Redis client.<br/>    __enter__(self): Context management entry.<br/>    __exit__(self, exc_type, exc_value, traceback): Context management exit.<br/>Initialize the RedisCache instance.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `redis_url` | **Type:** str |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### close
+
+```python
+close(self) -> None
+```
+
+    Close the Redis client.<br/>Perform any necessary cleanup, such as closing network connections.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get
+
+```python
+get(
+    self,
+    key: str,
+    default: Any | None = None
+) -> Any | None
+```
+
+    Retrieve an item from the Redis cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key identifying the item in the cache.<br/><br/>**Type:** str |
+| `default` | The default value to return if the key is not found.<br/><br/>Defaults to None.<br/><br/>**Type:** Any \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Any \| None | The deserialized value associated with the key if found, else the default value. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### set
+
+```python
+set(
+    self,
+    key: str,
+    value: Any
+) -> None
+```
+
+    Set an item in the Redis cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key under which the item is to be stored.<br/><br/>**Type:** str |
+| `value` | The value to be stored in the cache.<br/><br/>**Type:** Any |
+
+<br />

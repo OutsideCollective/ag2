@@ -1,0 +1,100 @@
+---
+sidebarTitle: GeminiClient
+title: autogen.oai.gemini.GeminiClient
+---
+<h2 id="autogen.oai.gemini.GeminiClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">GeminiClient</span>
+</h2>
+
+```python
+GeminiClient(**kwargs)
+```
+
+    Client for Google's Gemini API.<br/>Uses either either api_key for authentication from the LLM config
+    (specifying the GOOGLE_GEMINI_API_KEY environment variable also works),
+    or follows the Google authentication mechanism for VertexAI in Google Cloud if no api_key is specified,
+    where project_id and location can also be passed as parameters. Previously created credentials object can be provided,
+    or a Service account key file can also be used. If neither a service account key file, nor the api_key are passed,
+    then the default credentials will be used, which could be a personal account if the user is already authenticated in,
+    like in Google Cloud Shell.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `**kwargs` |  |
+
+### Class Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### PARAMS_MAPPING
+<br />
+
+    <br />
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### cost
+
+```python
+cost(self, response) -> float
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create
+
+```python
+create(self, params: dict) -> ChatCompletionExtended
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `params` | **Type:** dict |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_usage
+
+```python
+get_usage(response) -> dict
+```
+
+    Return usage summary of the response using RESPONSE_USAGE_KEYS.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### message_retrieval
+
+```python
+message_retrieval(self, response) -> list
+```
+
+    Retrieve and return a list of strings or a list of Choice.Message from the response.<br/>NOTE: if a list of Choice.Message is returned, it currently needs to contain the fields of OpenAI's ChatCompletion Message object,
+    since that is expected for function or tool calling in the rest of the codebase at the moment, unless a custom agent is being used.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `response` |  |
+
+<br />

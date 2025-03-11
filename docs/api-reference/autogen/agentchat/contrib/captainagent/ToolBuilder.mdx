@@ -1,0 +1,104 @@
+---
+sidebarTitle: ToolBuilder
+title: autogen.agentchat.contrib.captainagent.ToolBuilder
+---
+<h2 id="autogen.agentchat.contrib.captainagent.ToolBuilder" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">ToolBuilder</span>
+</h2>
+
+```python
+ToolBuilder(
+    corpus_root,
+    retriever='all-mpnet-base-v2',
+    type='default'
+)
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `corpus_root` |  |
+| `retriever='all-mpnet-base-v2'` |  |
+| `type='default'` |  |
+
+### Class Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### TOOL_PROMPT_DEFAULT
+<br />
+
+    <br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### TOOL_PROMPT_USER_DEFINED
+<br />
+
+    <br />
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### bind
+
+```python
+bind(
+    self,
+    agent: AssistantAgent,
+    functions: str
+) -> 
+```
+
+    Binds the function to the agent so that agent is aware of it.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `agent` | **Type:** [AssistantAgent](/docs/api-reference/autogen/AssistantAgent) |
+| `functions` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### bind_user_proxy
+
+```python
+bind_user_proxy(
+    self,
+    agent: UserProxyAgent,
+    tool_root: str | list
+) -> 
+```
+
+    Updates user proxy agent with a executor so that code executor can successfully execute function-related code.<br/>Returns an updated user proxy.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `agent` | **Type:** [UserProxyAgent](/docs/api-reference/autogen/UserProxyAgent) |
+| `tool_root` | **Type:** str \| list |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### retrieve
+
+```python
+retrieve(
+    self,
+    query,
+    top_k=3
+) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `query` |  |
+| `top_k=3` |  |
+
+<br />

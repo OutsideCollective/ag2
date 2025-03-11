@@ -1,0 +1,44 @@
+---
+sidebarTitle: LLMLingua
+title: autogen.agentchat.contrib.capabilities.text_compressors.LLMLingua
+---
+<h2 id="autogen.agentchat.contrib.capabilities.text_compressors.LLMLingua" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">LLMLingua</span>
+</h2>
+
+```python
+LLMLingua(prompt_compressor_kwargs: dict = {'model_name': 'microsoft/llmlingua-2-bert-base-multilingual-cased-meetingbank', 'use_llmlingua2': True, 'device_map': 'cpu'}, structured_compression: bool = False)
+```
+
+    Compresses text messages using LLMLingua for improved efficiency in processing and response generation.<br/>NOTE: The effectiveness of compression and the resultant token savings can vary based on the content of the messages
+    and the specific configurations used for the PromptCompressor.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `prompt_compressor_kwargs` | **Type:** dict<br/><br/>**Default:** \{'model_name' |
+| `structured_compression` | **Type:** bool<br/><br/>**Default:** False |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### compress_text
+
+```python
+compress_text(
+    self,
+    text: str,
+    **compression_params
+) -> dict[str, Any]
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `text` | **Type:** str |
+| `**compression_params` |  |
+
+<br />

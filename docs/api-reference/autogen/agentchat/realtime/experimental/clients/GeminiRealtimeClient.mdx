@@ -1,0 +1,229 @@
+---
+sidebarTitle: GeminiRealtimeClient
+title: autogen.agentchat.realtime.experimental.clients.GeminiRealtimeClient
+---
+<h2 id="autogen.agentchat.realtime.experimental.clients.GeminiRealtimeClient" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">GeminiRealtimeClient</span>
+</h2>
+
+```python
+GeminiRealtimeClient(
+    *,
+    llm_config: dict[str, Any],
+    logger: Logger | None = None
+)
+```
+
+    (Experimental) Client for Gemini Realtime API.<br/>(Experimental) Client for Gemini Realtime API.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `llm_config` | **Type:** dict[str, typing.Any] |
+| `logger` | **Type:** logging.Logger \| None<br/><br/>**Default:** None |
+
+### Static Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_factory
+
+```python
+get_factory(
+    llm_config: dict[str, Any],
+    logger: Logger,
+    **kwargs: Any
+) -> 
+```
+
+    Create a Realtime API client.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `llm_config` | The LLM config for the client.<br/><br/>**Type:** dict[str, typing.Any] |
+| `logger` | The logger for the client.<br/><br/>**Type:** logging.Logger |
+| `**kwargs` | Additional arguments.<br/><br/>**Type:** Any |
+
+<br />
+
+### Instance Attributes
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### connection
+<br />
+
+    Get the Gemini WebSocket connection.
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>
+#### logger
+<br />
+
+    Get the logger for the Gemini Realtime API.
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### add_event
+
+```python
+add_event(self, event: RealtimeEvent | None) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `event` | **Type:** [RealtimeEvent](/docs/api-reference/autogen/agentchat/realtime/experimental/realtime_events/RealtimeEvent) \| None |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### connect
+
+```python
+connect(self) -> AsyncGenerator[None, None]
+```
+
+    Connect to the Gemini Realtime API.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_event
+
+```python
+get_event(self) -> RealtimeEvent | None
+```
+
+    
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### queue_input_audio_buffer_delta
+
+```python
+queue_input_audio_buffer_delta(self, audio: str) -> None
+```
+
+    queue InputAudioBufferDelta.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `audio` | The audio.<br/><br/>**Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### read_events
+
+```python
+read_events(self) -> AsyncGenerator[RealtimeEvent, None]
+```
+
+    Read Events from the Gemini Realtime Client
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### send_audio
+
+```python
+send_audio(self, audio: str) -> None
+```
+
+    Send audio to the Gemini Realtime API.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `audio` | The audio to send.<br/><br/>**Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### send_function_result
+
+```python
+send_function_result(
+    self,
+    call_id: str,
+    result: str
+) -> None
+```
+
+    Send the result of a function call to the Gemini Realtime API.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `call_id` | The ID of the function call.<br/><br/>**Type:** str |
+| `result` | The result of the function call.<br/><br/>**Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### send_text
+
+```python
+send_text(
+    self,
+    *,
+    role: Literal['user', 'assistant', 'system'],
+    text: str,
+    turn_complete: bool = True
+) -> None
+```
+
+    Send a text message to the Gemini Realtime API.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `role` | The role of the message.<br/><br/>**Type:** Literal['user', 'assistant', 'system'] |
+| `text` | The text of the message.<br/><br/>**Type:** str |
+| `turn_complete` | A flag indicating if the turn is complete.<br/><br/>**Type:** bool<br/><br/>**Default:** True |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### session_update
+
+```python
+session_update(self, session_options: dict[str, Any]) -> None
+```
+
+    Record session updates to be applied when the connection is established.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `session_options` | The session options to update.<br/><br/>**Type:** dict[str, typing.Any] |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### truncate_audio
+
+```python
+truncate_audio(
+    self,
+    audio_end_ms: int,
+    content_index: int,
+    item_id: str
+) -> None
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `audio_end_ms` | **Type:** int |
+| `content_index` | **Type:** int |
+| `item_id` | **Type:** str |
+
+<br />

@@ -1,0 +1,163 @@
+---
+sidebarTitle: CosmosDBCache
+title: autogen.cache.cosmos_db_cache.CosmosDBCache
+---
+<h2 id="autogen.cache.cosmos_db_cache.CosmosDBCache" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">CosmosDBCache</span>
+</h2>
+
+```python
+CosmosDBCache(seed: str | int, cosmosdb_config: CosmosDBConfig)
+```
+
+    Synchronous implementation of AbstractCache using Azure Cosmos DB NoSQL API.<br/>This class provides a concrete implementation of the AbstractCache
+    interface using Azure Cosmos DB for caching data, with synchronous operations.<br/>Attributes: <br/>    seed (Union[str, int]): A seed or namespace used as a partition key.<br/>    client (CosmosClient): The Cosmos DB client used for caching.<br/>    container: The container instance used for caching.<br/>Initialize the CosmosDBCache instance.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `cosmosdb_config` | **Type:** [CosmosDBConfig](/docs/api-reference/autogen/cache/cosmos_db_cache/CosmosDBConfig) |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### close
+
+```python
+close(self) -> None
+```
+
+    Close the Cosmos DB client.<br/>Perform any necessary cleanup, such as closing network connections.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### create_cache
+
+```python
+create_cache(seed: str | int, cosmosdb_config: CosmosDBConfig) -> 
+```
+
+    Factory method to create a CosmosDBCache instance based on the provided configuration.<br/>This method decides whether to use an existing CosmosClient or create a new one.
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `cosmosdb_config` | **Type:** [CosmosDBConfig](/docs/api-reference/autogen/cache/cosmos_db_cache/CosmosDBConfig) |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### from_config
+
+```python
+from_config(seed: str | int, cosmosdb_config: CosmosDBConfig) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `cosmosdb_config` | **Type:** [CosmosDBConfig](/docs/api-reference/autogen/cache/cosmos_db_cache/CosmosDBConfig) |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### from_connection_string
+
+```python
+from_connection_string(
+    seed: str | int,
+    connection_string: str,
+    database_id: str,
+    container_id: str
+) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `connection_string` | **Type:** str |
+| `database_id` | **Type:** str |
+| `container_id` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### from_existing_client
+
+```python
+from_existing_client(
+    seed: str | int,
+    client: CosmosClient,
+    database_id: str,
+    container_id: str
+) -> 
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+| `client` | **Type:** CosmosClient |
+| `database_id` | **Type:** str |
+| `container_id` | **Type:** str |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get
+
+```python
+get(
+    self,
+    key: str,
+    default: Any | None = None
+) -> Any | None
+```
+
+    Retrieve an item from the Cosmos DB cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key identifying the item in the cache.<br/><br/>**Type:** str |
+| `default` | The default value to return if the key is not found.<br/><br/>**Type:** Any \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Any \| None | The deserialized value associated with the key if found, else the default value. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### set
+
+```python
+set(
+    self,
+    key: str,
+    value: Any
+) -> None
+```
+
+    Set an item in the Cosmos DB cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key under which the item is to be stored.<br/><br/>**Type:** str |
+| `value` | The value to be stored in the cache.<br/><br/>**Type:** Any |
+
+<br />

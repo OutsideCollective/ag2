@@ -1,0 +1,185 @@
+---
+custom_edit_url: https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_RetrieveChat_qdrant.ipynb
+description: This notebook demonstrates the usage of QdrantRetrieveUserProxyAgent
+  for RAG.
+source_notebook: /notebook/agentchat_RetrieveChat_qdrant.ipynb
+tags:
+- Qdrant
+- integration
+- RAG
+title: Using RetrieveChat with Qdrant for Retrieve Augmented Code Generation and Question
+  Answering
+---
+
+<a href="https://colab.research.google.com/github/ag2ai/ag2/blob/main/notebook/agentchat_RetrieveChat_qdrant.ipynb" class="colab-badge" target="_blank"><img noZoom src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" /></a>
+<a href="https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_RetrieveChat_qdrant.ipynb" class="github-badge" target="_blank"><img noZoom src="https://img.shields.io/badge/Open%20on%20GitHub-grey?logo=github" alt="Open on GitHub" /></a>
+
+
+
+
+[Qdrant](https://qdrant.tech/) is a high-performance vector search
+engine/database.
+
+This notebook demonstrates the usage of Qdrant for RAG, based on
+[agentchat_RetrieveChat.ipynb](https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_RetrieveChat.ipynb).
+
+RetrieveChat is a conversational system for retrieve augmented code
+generation and question answering. In this notebook, we demonstrate how
+to utilize RetrieveChat to generate code and answer questions based on
+customized documentations that are not present in the LLM’s training
+dataset. RetrieveChat uses the `AssistantAgent` and
+`RetrieveUserProxyAgent`, which is similar to the usage of
+`AssistantAgent` and `UserProxyAgent` in other notebooks (e.g.,
+[Automated Task Solving with Code Generation, Execution &
+Debugging](https://github.com/ag2ai/ag2/blob/main/notebook/agentchat_auto_feedback_from_code_execution.ipynb)).
+
+We’ll demonstrate usage of RetrieveChat with Qdrant for code generation
+and question answering w/ human feedback.
+
+
+<div class="info Requirements">
+<Info>
+Some extra dependencies are needed for this notebook, which can be installed via pip:
+
+```bash
+pip install "autogen[retrievechat-qdrant]" "flaml[automl]"
+```
+
+For more information, please refer to the [installation guide](/docs/user-guide/basic-concepts/installing-ag2).
+</Info>
+</div>
+
+
+```python
+%pip install "autogen[retrievechat-qdrant]" "flaml[automl]" -q
+```
+
+## Set your API Endpoint
+
+The
+[`config_list_from_json`](https://docs.ag2.ai/docs/api-reference/autogen/config_list_from_json#config-list-from-json)
+function loads a list of configurations from an environment variable or
+a json file.
+
+```python
+from qdrant_client import QdrantClient
+from sentence_transformers import SentenceTransformer
+
+import autogen
+from autogen import AssistantAgent
+from autogen.agentchat.contrib.retrieve_user_proxy_agent import RetrieveUserProxyAgent
+
+# Accepted file formats for that can be stored in
+# a vector database instance
+from autogen.retrieve_utils import TEXT_FORMATS
+
+config_list = autogen.config_list_from_json("OAI_CONFIG_LIST")
+
+assert len(config_list) > 0
+print("models to use: ", [config_list[i]["model"] for i in range(len(config_list))])
+```
+
+
+<div class="tip">
+<Tip>
+Learn more about configuring LLMs for agents [here](/docs/topics/llm_configuration).
+</Tip>
+</div>
+
+
+```python
+print("Accepted file formats for `docs_path`:")
+print(TEXT_FORMATS)
+```
+
+## Construct agents for RetrieveChat
+
+We start by initializing the `AssistantAgent` and
+`RetrieveUserProxyAgent`. The system message needs to be set to “You are
+a helpful assistant.” for AssistantAgent. The detailed instructions are
+given in the user message. Later we will use the
+`RetrieveUserProxyAgent.generate_init_prompt` to combine the
+instructions and a retrieval augmented generation task for an initial
+prompt to be sent to the LLM assistant.
+
+### You can find the list of all the embedding models supported by Qdrant [here](https://qdrant.github.io/fastembed/examples/Supported_Models/). 
+
+```python
+# 1. create an AssistantAgent instance named "assistant"
+assistant = AssistantAgent(
+    name="assistant",
+    system_message="You are a helpful assistant.",
+    llm_config={
+        "timeout": 600,
+        "cache_seed": 42,
+        "config_list": config_list,
+    },
+)
+
+# Optionally create embedding function object
+sentence_transformer_ef = SentenceTransformer("all-distilroberta-v1").encode
+client = QdrantClient(":memory:")
+
+# 2. create the RetrieveUserProxyAgent instance named "ragproxyagent"
+# Refer to https://docs.ag2.ai/docs/reference/agentchat/contrib/retrieve_user_proxy_agent
+# and https://docs.ag2.ai/docs/reference/agentchat/contrib/vectordb/qdrant
+# for more information on the RetrieveUserProxyAgent and QdrantVectorDB
+ragproxyagent = RetrieveUserProxyAgent(
+    name="ragproxyagent",
+    human_input_mode="NEVER",
+    max_consecutive_auto_reply=10,
+    retrieve_config={
+        "task": "code",
+        "docs_path": [
+            "https://raw.githubusercontent.com/ag2ai/flaml/main/README.md",
+            "https://raw.githubusercontent.com/ag2ai/FLAML/main/website/docs/Research.md",
+        ],  # change this to your own path, such as https://raw.githubusercontent.com/ag2ai/ag2/main/README.md
+        "chunk_token_size": 2000,
+        "model": config_list[0]["model"],
+        "db_config": {"client": client},
+        "vector_db": "qdrant",  # qdrant database
+        "get_or_create": True,  # set to False if you don't want to reuse an existing collection
+        "overwrite": True,  # set to True if you want to overwrite an existing collection
+        "embedding_function": sentence_transformer_ef,  # If left out fastembed "BAAI/bge-small-en-v1.5" will be used
+    },
+    code_execution_config=False,
+)
+```
+
+<a id="example-1"></a> \### Example 1
+
+[back to top](#)
+
+Use RetrieveChat to answer a question and ask for human-in-loop
+feedbacks.
+
+Problem: Is there a function named `tune_automl` in FLAML?
+
+```python
+# reset the assistant. Always reset the assistant before starting a new conversation.
+assistant.reset()
+
+qa_problem = "Is there a function called tune_automl?"
+chat_results = ragproxyagent.initiate_chat(assistant, message=ragproxyagent.message_generator, problem=qa_problem)
+```
+
+<a id="example-2"></a> \### Example 2
+
+[back to top](#)
+
+Use RetrieveChat to answer a question that is not related to code
+generation.
+
+Problem: Who is the author of FLAML?
+
+```python
+# reset the assistant. Always reset the assistant before starting a new conversation.
+assistant.reset()
+
+qa_problem = "Who is the author of FLAML?"
+chat_results = ragproxyagent.initiate_chat(assistant, message=ragproxyagent.message_generator, problem=qa_problem)
+```
+
+<div className="edit-url-container">
+    <a className="edit-url" href="https://github.com/ag2ai/ag2/edit/main/notebook/agentchat_RetrieveChat_qdrant.ipynb" target='_blank'><Icon icon="pen" iconType="solid" size="13px"/> Edit this page</a>
+</div>

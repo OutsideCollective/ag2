@@ -1,0 +1,82 @@
+---
+sidebarTitle: MessageTokenLimiter
+title: autogen.agentchat.contrib.capabilities.transforms.MessageTokenLimiter
+---
+<h2 id="autogen.agentchat.contrib.capabilities.transforms.MessageTokenLimiter" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">MessageTokenLimiter</span>
+</h2>
+
+```python
+MessageTokenLimiter(
+    max_tokens_per_message: int | None = None,
+    max_tokens: int | None = None,
+    min_tokens: int | None = None,
+    model: str = 'gpt-3.5-turbo-0613',
+    filter_dict: dict[str, Any] | None = None,
+    exclude_filter: bool = True
+)
+```
+
+    Truncates messages to meet token limits for efficient processing and response generation.<br/>This transformation applies two levels of truncation to the conversation history: <br/>1. Truncates each individual message to the maximum number of tokens specified by max_tokens_per_message.<br/>2. Truncates the overall conversation history to the maximum number of tokens specified by max_tokens.<br/>NOTE: Tokens are counted using the encoder for the specified model. Different models may yield different token
+        counts for the same text.<br/>NOTE: For multimodal LLMs, the token count may be inaccurate as it does not account for the non-text input
+        (e.g images).<br/>The truncation process follows these steps in order: <br/>1. The minimum tokens threshold (`min_tokens`) is checked (0 by default). If the total number of tokens in messages
+        is less than this threshold, then the messages are returned as is. In other case, the following process is applied.<br/>2. Messages are processed in reverse order (newest to oldest).<br/>3. Individual messages are truncated based on max_tokens_per_message. For multimodal messages containing both text
+        and other types of content, only the text content is truncated.<br/>4. The overall conversation history is truncated based on the max_tokens limit. Once the accumulated token count
+        exceeds this limit, the current message being processed get truncated to meet the total token count and any
+        remaining messages get discarded.<br/>5. The truncated conversation history is reconstructed by prepending the messages to a new list to preserve the
+        original message order.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `max_tokens_per_message` | **Type:** int \| None<br/><br/>**Default:** None |
+| `max_tokens` | **Type:** int \| None<br/><br/>**Default:** None |
+| `min_tokens` | **Type:** int \| None<br/><br/>**Default:** None |
+| `model` | **Type:** str<br/><br/>**Default:** 'gpt-3.5-turbo-0613' |
+| `filter_dict` | **Type:** dict[str, typing.Any] \| None<br/><br/>**Default:** None |
+| `exclude_filter` | **Type:** bool<br/><br/>**Default:** True |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### apply_transform
+
+```python
+apply_transform(self, messages: list[dict[str, Any]]) -> list[dict[str, Any]]
+```
+
+    Applies token truncation to the conversation history.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `messages` | The list of messages representing the conversation history.<br/><br/>**Type:** list[dict[str, typing.Any]] |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| list[dict[str, typing.Any]] | List[Dict]: A new list containing the truncated messages up to the specified token limits. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get_logs
+
+```python
+get_logs(
+    self,
+    pre_transform_messages: list[dict[str, Any]],
+    post_transform_messages: list[dict[str, Any]]
+) -> tuple[str, bool]
+```
+
+    
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `pre_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+| `post_transform_messages` | **Type:** list[dict[str, typing.Any]] |
+
+<br />

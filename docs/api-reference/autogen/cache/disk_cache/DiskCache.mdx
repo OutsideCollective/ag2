@@ -1,0 +1,81 @@
+---
+sidebarTitle: DiskCache
+title: autogen.cache.disk_cache.DiskCache
+---
+<h2 id="autogen.cache.disk_cache.DiskCache" class="doc doc-heading">
+    <code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>
+    <span class="doc doc-object-name doc-class-name">DiskCache</span>
+</h2>
+
+```python
+DiskCache(seed: str | int)
+```
+
+    Implementation of AbstractCache using the DiskCache library.<br/>This class provides a concrete implementation of the AbstractCache
+    interface using the diskcache library for caching data on disk.<br/>Attributes: <br/>    cache (diskcache.Cache): The DiskCache instance used for caching.<br/>Methods: <br/>    __init__(self, seed): Initializes the DiskCache with the given seed.<br/>    get(self, key, default=None): Retrieves an item from the cache.<br/>    set(self, key, value): Sets an item in the cache.<br/>    close(self): Closes the cache.<br/>    __enter__(self): Context management entry.<br/>    __exit__(self, exc_type, exc_value, traceback): Context management exit.<br/>Initialize the DiskCache instance.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `seed` | **Type:** str \| int |
+
+### Instance Methods
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### close
+
+```python
+close(self) -> None
+```
+
+    Close the cache.<br/>Perform any necessary cleanup, such as closing file handles or
+    releasing resources.
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### get
+
+```python
+get(
+    self,
+    key: str,
+    default: Any | None = None
+) -> Any | None
+```
+
+    Retrieve an item from the cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key identifying the item in the cache.<br/><br/>**Type:** str |
+| `default` | The default value to return if the key is not found.<br/><br/>Defaults to None.<br/><br/>**Type:** Any \| None<br/><br/>**Default:** None |
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Any \| None | The value associated with the key if found, else the default value. |
+
+<br />
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>
+#### set
+
+```python
+set(
+    self,
+    key: str,
+    value: Any
+) -> None
+```
+
+    Set an item in the cache.<br/>
+
+<b>Parameters:</b>
+| Name | Description |
+|--|--|
+| `key` | The key under which the item is to be stored.<br/><br/>**Type:** str |
+| `value` | The value to be stored in the cache.<br/><br/>**Type:** Any |
+
+<br />

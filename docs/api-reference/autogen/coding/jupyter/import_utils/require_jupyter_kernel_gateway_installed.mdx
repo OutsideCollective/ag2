@@ -1,0 +1,21 @@
+---
+sidebarTitle: require_jupyter_kernel_gateway_installed
+title: autogen.coding.jupyter.import_utils.require_jupyter_kernel_gateway_installed
+---
+
+<code class="doc-symbol doc-symbol-heading doc-symbol-function"></code>
+#### require_jupyter_kernel_gateway_installed
+
+```python
+require_jupyter_kernel_gateway_installed() -> Callable[[~T], ~T]
+```
+
+    Decorator that checks if jupyter-kernel-gateway is installed before function execution.<br/>Returns: <br/>    Callable[[T], T]: A decorator function that either: <br/>        - Returns the original function unchanged if jupyter-kernel-gateway is installed
+            - Returns a patched version of the function that will raise a helpful error indicating the missing dependency when called
+
+<b>Returns:</b>
+| Type | Description |
+|--|--|
+| Callable[[~T], ~T] | Callable[[T], T]: A decorator function that either: - Returns the original function unchanged if jupyter-kernel-gateway is installed - Returns a patched version of the function that will raise a helpful error indicating the missing dependency when called |
+
+<br />
